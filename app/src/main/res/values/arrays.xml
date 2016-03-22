@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="countdown">
+        <item>@string/countdown_three</item>
+        <item>@string/countdown_two</item>
+        <item>@string/countdown_one</item>
+    </array>
+
+    <!-- Display settings.  The delay in inactivity before the screen is turned off. These are shown in a list dialog. -->
+    <string-array name="video_size_percentage_entries">
+        <item>@string/float_record_super_hd_quality</item>
+        <item>@string/float_record_hd_quality</item>
+        <item>@string/float_record_normal_quality</item>
+    </string-array>
+
+    <!-- Do not translate. -->
+    <string-array name="video_size_percentage_values" translatable="false">
+        <!-- Do not translate. -->
+        <item>100</item>
+        <!-- Do not translate. -->
+        <item>75</item>
+        <!-- Do not translate. -->
+        <item>50</item>
+
+    </string-array>
+
+</resources>

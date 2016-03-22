@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="8dp"
+    card_view:cardBackgroundColor="@android:color/white"
+    android:foreground="?selectableItemBackground"
+    card_view:cardCornerRadius="2dp"
+    card_view:cardElevation="2dp">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <com.way.captain.widget.SimpleTagImageView xmlns:simple="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ic_gif"
+            android:layout_width="90dp"
+            android:layout_height="160dip"
+            android:scaleType="fitStart"
+            simple:simple_tag_background_color="@color/colorAccent"
+            simple:simple_tag_enable="true"
+            simple:simple_tag_orientation="right_top"
+            simple:simple_tag_text="GIF"
+            simple:simple_tag_textColor="@android:color/white"
+            simple:simple_tag_textSize="12sp"
+            simple:simple_tag_width="12dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/title_gif"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textAppearance="?textAppearanceListItem" />
+
+            <TextView
+                android:id="@+id/time_gif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="8dp"
+                android:textAppearance="?android:textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/size_gif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="32dp"
+                android:textAppearance="?android:textAppearanceSmall" />
+            <com.way.captain.widget.PopupMenuButton
+                android:id="@+id/popup_menu_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginBottom="2dp"
+                android:src="@drawable/menu_button" />
+        </FrameLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

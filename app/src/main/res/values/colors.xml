@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="window_background">#FFFFFF</color>
+    <color name="window_background_2">#FFFFFE</color>
+
+    <color name="primary_normal">#ff455a64</color>
+    <color name="primary_dark_normal">#ff263238</color>
+    <color name="accent_normal">#ffdd2c00</color>
+    <color name="accent_pressed">#ffa72600</color>
+    <color name="gray_normal">#ff757575</color>
+    <color name="gray_pressed">#ff616161</color>
+    <color name="system_notification_accent_color">#ff607D8B</color>
+
+    <color name="black_semi_transparent">#B2000000</color>
+    <color name="background">#e5e5e5</color>
+    <color name="half_black">#808080</color>
+    <color name="white">#fafafa</color>
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="pink">#e91e63</color>
+    <color name="pink_pressed">#ec407a</color>
+    <color name="blue_semi_transparent">#805677fc</color>
+    <color name="blue_semi_transparent_pressed">#80738ffe</color>
+    <color name="bg_swipe_item_pinned">#ff2f8b2a</color>
+    <color name="share_red_hint">#fffd0000</color>
+    <color name="no_results">#ff231f20</color>
+</resources>

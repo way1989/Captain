@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/record_overlay_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="176.0dip"
+            android:layout_height="52.0dip"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/icon_float_record_control_bg"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="4.0dip">
+
+            <LinearLayout
+                android:id="@+id/record_overlay_cancel"
+                android:layout_width="56.0dip"
+                android:layout_height="32.0dip"
+                android:background="@drawable/bg_record_cancel_selector"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="2.0dip"
+                android:paddingRight="2.0dip">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2.0dip"
+                    android:src="@drawable/icon_float_record_cancel" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/float_record_cancel"
+                    android:textColor="@color/white"
+                    android:textSize="12.0sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0" />
+
+            <LinearLayout
+                android:id="@+id/record_change_quality"
+                android:layout_width="56.0dip"
+                android:layout_height="32.0dip"
+                android:background="@drawable/bg_record_change_quality_selector"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="2.0dip"
+                android:paddingRight="2.0dip">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2.0dip"
+                    android:src="@drawable/icon_float_change_quality" />
+
+                <TextView
+                    android:id="@+id/show_record_quality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/float_record_normal_quality"
+                    android:textColor="@color/white"
+                    android:textSize="12.0sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/record_overlay_start"
+                android:layout_width="52.0dip"
+                android:layout_height="52.0dip"
+                android:background="@drawable/bg_float_record_start" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:shadowColor="@android:color/black"
+                android:shadowRadius="2"
+                android:text="@string/float_record_start"
+                android:textColor="@color/white"
+                android:textSize="12.0sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/record_overlay_recording"
+        android:layout_width="46dip"
+        android:layout_height="46dip"
+        android:layout_centerHorizontal="true"
+        android:alpha="0"
+        android:background="@drawable/bg_float_record_countdown"
+        android:gravity="center"
+        android:text="@string/record"
+        android:textAllCaps="true"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+    <include
+        layout="@layout/float_view_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

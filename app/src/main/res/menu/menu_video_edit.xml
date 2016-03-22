@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/video_menu_to_gif"
+        android:title="@string/video_to_gif" />
+    <item
+        android:id="@+id/video_menu_length"
+        android:title="@string/video_set_length" />
+
+    <item
+        android:id="@+id/video_menu_frame"
+        android:title="@string/video_set_frame" />
+
+    <item
+        android:id="@+id/video_menu_scale"
+        android:title="@string/video_set_scale" />
+</menu>

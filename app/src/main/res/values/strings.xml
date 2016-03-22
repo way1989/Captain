@@ -1,0 +1,102 @@
+<resources>
+    <string name="app_name">Captain</string>
+    <string name="action_settings">Settings</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+
+    <string name="video_title">Videos</string>
+    <string name="gif_title">Gifs</string>
+
+    <string name="launcher_name">@string/app_name</string>
+
+    <string name="shortcut_name">Launch</string>
+    <string name="clear">Clear</string>
+    <string name="record">Record</string>
+    <string name="countdown_one">1…</string>
+    <string name="countdown_two">2…</string>
+    <string name="countdown_three">3…</string>
+    <string name="launch_overlay">Launch Overlay</string>
+    <string name="preferences">Preferences</string>
+    <string name="countdown">Three second countdown</string>
+    <string name="recents_hide">Hide from recent apps</string>
+    <string name="video_size_percentage">Video size</string>
+    <string name="notification_captured_title">Screen recording captured.</string>
+    <string name="notification_captured_subtitle">Touch to view your screen recording.</string>
+    <string name="notification_captured_share">Share</string>
+    <string name="notification_captured_delete">Delete</string>
+    <string name="notification_recording_title">Recording screen.</string>
+    <string name="notification_recording_subtitle">Touch the clock area to stop recording.</string>
+    <string name="recording_notification">Recording Notification</string>
+    <string name="show_touches">Show Touches</string>
+
+    <string name="share">Share</string>
+    <!-- Notification ticker displayed when a screenshot is being saved to the Gallery. [CHAR LIMIT=30] -->
+    <string name="screenshot_saving_ticker">Saving screenshot\u2026</string>
+    <!-- Notification title displayed when a screenshot is being saved to the Gallery. [CHAR LIMIT=50] -->
+    <string name="screenshot_saving_title">Saving screenshot\u2026</string>
+    <!-- Notification text displayed when a screenshot is being saved to the Gallery. [CHAR LIMIT=100] -->
+    <string name="screenshot_saving_text">Screenshot is being saved.</string>
+    <!-- Notification title displayed when a screenshot is saved to the Gallery. [CHAR LIMIT=50] -->
+    <string name="screenshot_saved_title">Screenshot captured.</string>
+    <!-- Notification text displayed when a screenshot is saved to the Gallery. [CHAR LIMIT=100] -->
+    <string name="screenshot_saved_text">Touch to view your screenshot.</string>
+    <!-- Notification title displayed when we fail to take a screenshot. [CHAR LIMIT=50] -->
+    <string name="screenshot_failed_title">Couldn\'t capture screenshot.</string>
+    <!-- Notification text displayed when we fail to take a screenshot. [CHAR LIMIT=100] -->
+    <string name="screenshot_failed_text">Can\'t take screenshot due to limited storage space, or it isn\'t allowed by the app or your organization.</string>
+    <!-- Screenshot delete -->
+    <string name="screenshot_delete_action">Delete</string>
+    <string name="screenshot_delete_confirmation">Screenshot deleted.</string>
+    <string name="screen_shot">Take Screenshot</string>
+    <string name="chathead_content_title">captain</string>
+    <string name="chathead_content_text">the captain is running</string>
+    <string name="shipped_ffmpeg_version" translatable="false">n2.4.2</string>
+    <string name="video_size_percentage_summary">select the size of screen record</string>
+    <string name="countdown_summary">wait three seconds when begin take a screen record</string>
+    <string name="show_touches_summary">show a touch indicator when take a screen record</string>
+    <string name="use_atouch">Assistive Touch</string>
+    <string name="about_menu">About</string>
+    <string name="settings_self_title" translatable="false">way</string>
+    <string name="settings_author_title">Author</string>
+    <string name="settings_version_title">Version</string>
+    <string name="settings_happen_category">Trigger Method</string>
+    <string name="advance_category">Advance settings</string>
+    <string name="use_atouch_summary">Use assistive touch to start screen record</string>
+    <string name="boot_auto">Auto Launch</string>
+    <string name="boot_auto_summary">Auto launch Captain after reboot</string>
+    <string name="snack_bar_action_undo">UNDO</string>
+    <string name="snack_bar_text_item_removed">1 item removed</string>
+    <string name="float_record_cancel">Cancle</string>
+    <string name="float_record_end_handle">Saving...</string>
+    <string name="float_record_failed"></string>
+    <string name="float_record_hd_quality">HD</string>
+    <string name="float_record_start">REC</string>
+    <string name="float_record_normal_quality">Normal</string>
+    <string name="float_record_super_hd_quality">SHD</string>
+    <string name="settings_with_arrow">Settings &gt;</string>
+    <string name="exit">Exit</string>
+    <string name="next_with_arrow">Next &gt;</string>
+    <string name="next" translatable="false">Next</string>
+    <string name="settings" translatable="false">Settings</string>
+    <string name="enable_permission_procedure">You can change permissions in Settings > Apps > Captain > Permissions.</string>
+    <string name="enable_permission_procedure_description">You can change permissions in Settings, Apps, Captain, Permissions.</string>
+    <string name="required_permissions_promo">Captainneeds permission to Storage.</string>
+    <string name="empty_generic_main">No Datas</string>
+    <string name="empty_generic_secondary">No Datas</string>
+    <string name="video_set_length">Length</string>
+    <string name="video_set_frame">Frame</string>
+    <string name="video_set_scale">Size</string>
+    <string name="video_to_gif">To GIF</string>
+
+    <string name="gif_rate_setting_dialog_title">Select Gif Rate</string>
+    <string name="gif_rate_unit">Frames/S</string>
+    <string name="gif_max_length_setting_dialog_title">Set Max Time</string>
+    <string name="gif_max_time_length_unit">S</string>
+    <string name="rate_rang_setting_tips">Select larger, the GIF bigger</string>
+    <string name="max_time_setting_tips">The more, the bigger Gif</string>
+    <string name="gif_quality_setting_dialog_title">Select Gif Quality</string>
+    <string name="gif_size_unit">Scale rate</string>
+    <string name="gif_size_tips">The more, the bigger Gif</string>
+    <string name="default_values">Default</string>
+    <string name="twice_press_exit">Press twice to exit!</string>
+</resources>

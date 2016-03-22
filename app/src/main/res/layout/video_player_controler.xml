@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/video_control_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="#CC000000"
+    android:orientation="horizontal"
+    android:visibility="gone">
+
+    <ImageButton
+        android:id="@+id/pause"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/selectable_background_light"
+        android:src="@drawable/ic_play_arrow_white_36dp" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/time_current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:paddingEnd="4dip"
+            android:paddingStart="8dip"
+            android:paddingTop="4dip"
+            android:text="00:00"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
+        <SeekBar
+            android:id="@+id/mediacontroller_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="32dip"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/time_current" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:paddingEnd="8dip"
+            android:paddingStart="4dip"
+            android:paddingTop="4dip"
+            android:text="00:00"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/to_gif"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/selectable_background_light"
+        android:src="@drawable/ic_more_vert_white_24dp" />
+</LinearLayout>

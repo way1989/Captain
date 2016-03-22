@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/action_settings">
+    <PreferenceCategory android:title="@string/settings_happen_category">
+        <!-- Assistive Touch -->
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="key_use_atouch"
+            android:summary="@string/use_atouch_summary"
+            android:title="@string/use_atouch" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="key_advance_category"
+        android:title="@string/advance_category">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="key_use_atouch"
+            android:summary="@string/boot_auto_summary"
+            android:title="@string/boot_auto" />
+        <ListPreference
+            android:defaultValue="100"
+            android:entries="@array/video_size_percentage_entries"
+            android:entryValues="@array/video_size_percentage_values"
+            android:key="key_video_size_percentage"
+            android:summary="@string/video_size_percentage_summary"
+            android:title="@string/video_size_percentage" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_three_second_countdown"
+            android:summary="@string/countdown_summary"
+            android:title="@string/countdown" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="key_show_touches"
+            android:summary="@string/show_touches_summary"
+            android:title="@string/show_touches" />
+    </PreferenceCategory>
+    <!-- About -->
+    <PreferenceCategory android:title="@string/about_menu">
+        <Preference
+            android:key="about_author"
+            android:summary="@string/settings_self_title"
+            android:title="@string/settings_author_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://blog.csdn.net/way_ping_li" />
+        </Preference>
+        <Preference
+            android:key="key_version"
+            android:title="@string/settings_version_title" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

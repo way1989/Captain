@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="shortcut_name">启动</string>
+    <string name="clear">清除</string>
+    <string name="record">准备…</string>
+    <string name="countdown_one">1…</string>
+    <string name="countdown_two">2…</string>
+    <string name="countdown_three">3…</string>
+    <string name="launch_overlay">准备录制</string>
+    <string name="preferences">参数</string>
+    <string name="countdown">三秒倒计时</string>
+    <string name="recents_hide">隐藏最近使用程序</string>
+    <string name="video_size_percentage">视频尺寸</string>
+    <string name="notification_captured_title">屏幕录制拍摄.</string>
+    <string name="notification_captured_subtitle">触摸查看屏幕录像.</string>
+    <string name="notification_captured_share">分享</string>
+    <string name="notification_captured_delete">删除</string>
+    <string name="notification_recording_title">录制屏幕中.</string>
+    <string name="notification_recording_subtitle">触摸右上角停止录像.</string>
+    <string name="recording_notification">录像通知</string>
+    <string name="show_touches">显示触摸区域</string>
+
+    <string name="share">分享</string>
+    <string name="screenshot_saving_ticker" msgid="7403652894056693515">"正在保存屏幕截图..."</string>
+    <string name="screenshot_saving_title" msgid="8242282144535555697">"正在保存屏幕截图..."</string>
+    <string name="screenshot_saving_text" msgid="2419718443411738818">"正在保存屏幕截图。"</string>
+    <string name="screenshot_saved_title" msgid="6461865960961414961">"已抓取屏幕截图。"</string>
+    <string name="screenshot_saved_text" msgid="1152839647677558815">"触摸可查看您的屏幕截图。"</string>
+    <string name="screenshot_failed_title" msgid="705781116746922771">"无法抓取屏幕截图。"</string>
+    <string name="screenshot_failed_text" msgid="1260203058661337274">"无法进行屏幕截图，原因可能是存储空间不足，或者该应用或您所属的单位不允许执行此操作。"</string>
+    <string name="screen_shot">截屏</string>
+    <string name="screenshot_delete_action">删除</string>
+    <string name="screenshot_delete_confirmation">屏幕截图已删除。</string>
+    <string name="launcher_name">@string/app_name</string>
+    <string name="about_menu">关于</string>
+    <string name="action_settings">设置</string>
+    <string name="advance_category">高级设置</string>
+    <string name="chathead_content_text">录屏正在运行</string>
+    <string name="chathead_content_title">录屏</string>
+    <string name="countdown_summary">录屏前倒计时3秒</string>
+    <string name="settings_author_title">作者</string>
+    <string name="settings_happen_category">触发方式</string>
+    <string name="settings_version_title">版本</string>
+    <string name="show_touches_summary">录屏时显示触摸位置</string>
+    <string name="use_atouch">小白点</string>
+    <string name="use_atouch_summary">点击小白点触发录屏</string>
+    <string name="video_size_percentage_summary">选择录屏文件保存尺寸</string>
+    <string name="video_title">视频</string>
+    <string name="gif_title">GIF动画</string>
+    <string name="boot_auto">开机启动</string>
+    <string name="boot_auto_summary">开机后自动启动录屏</string>
+
+    <string name="float_record_cancel">取消</string>
+    <string name="float_record_end_handle">处理中...</string>
+    <string name="float_record_failed">录制失败</string>
+    <string name="float_record_first_switch_hd_toast">高清画质下，视频大小是标准的2~3倍</string>
+    <string name="float_record_super_hd_quality">超清</string>
+    <string name="float_record_hd_quality">高清</string>
+    <string name="float_record_normal_quality">标清</string>
+    <string name="float_record_start">REC</string>
+    <string name="settings_with_arrow"><![CDATA["设置 >"]]></string>
+    <string name="enable_permission_procedure"><![CDATA["您可以在“设置”>“应用”>“Captain”>“权限”中更改权限。"]]></string>
+    <string name="enable_permission_procedure_description">"您可以依次触摸“设置”、“应用”、“Captain”和“权限”来更改权限。"</string>
+    <string name="exit">退出</string>
+    <string name="next_with_arrow"><![CDATA["下一步 >"]]></string>
+    <string name="required_permissions_promo">"“Captain”应用需要获得“读写存储设备权限。"</string>
+    <string name="snack_bar_action_undo">撤销</string>
+    <string name="snack_bar_text_item_removed">删除了一项内容</string>
+
+    <string name="video_set_length">GIF时长</string>
+    <string name="video_set_frame">GIF帧率</string>
+    <string name="video_set_scale">GIF质量</string>
+    <string name="video_to_gif">生成GIF</string>
+    <string name="gif_rate_setting_dialog_title">设定帧率</string>
+    <string name="gif_rate_unit">帧/秒</string>
+    <string name="gif_max_length_setting_dialog_title">设定最大时长</string>
+    <string name="gif_max_time_length_unit">秒</string>
+    <string name="max_time_setting_tips">最大时长用来限制从视频中截取的片段的最大范围，最少为2秒。时间越长，生成的图片就会越大，内容也越丰富。</string>
+    <string name="rate_rang_setting_tips">帧率为GIF图片每秒的图片张数，帧率越大，制作出来的GIF就会越流畅连贯,但生成的图片也会越大。人眼能区分帧数的上限为25帧，也就是高于25帧/秒的帧率人眼已经区分不出来了。</string>
+    <string name="gif_quality_setting_dialog_title">设定图片质量</string>
+    <string name="gif_size_unit">倍缩小</string>
+    <string name="gif_size_tips">值越大，生成的图片越小，效果也就越差</string>
+    <string name="default_values">默认值</string>
+    <string name="empty_generic_main">无数据</string>
+    <string name="empty_generic_secondary">无数据</string>
+    <string name="twice_press_exit">再按一次退出</string>
+</resources>

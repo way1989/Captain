@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recorder_layout"
+    android:layout_width="60.0dip"
+    android:layout_height="75.0dip"
+    android:layout_centerHorizontal="true"
+    android:alpha="0"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:visibility="invisible">
+
+    <ImageButton
+        android:id="@+id/record_overlay_stop"
+        android:layout_width="46.0dip"
+        android:layout_height="46.0dip"
+        android:background="@drawable/bg_float_record_pause_ripple"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6.0dip"
+        android:background="@drawable/bg_float_record_black_retangle"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="4.0dip"
+        android:paddingRight="4.0dip">
+
+        <View
+            android:layout_width="6.0dip"
+            android:layout_height="6.0dip"
+            android:background="@drawable/bg_record_red_circle_hint" />
+
+        <TextView
+            android:id="@+id/recording_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2.0dip"
+            android:text="00:00"
+            android:textColor="@android:color/white"
+            android:textSize="14.0sp" />
+    </LinearLayout>
+</LinearLayout>
+

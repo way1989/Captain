@@ -1,0 +1,38 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="margin">16dp</dimen>
+
+    <dimen name="view_pager_margin">12dp</dimen>
+
+    <dimen name="content_padding">16dp</dimen>
+    <dimen name="overlay_width">96dp</dimen>
+    <dimen name="overlay_height">25dp</dimen>
+    <!-- TODO move to values-23/ as overlay_height overload when M is released. -->
+    <dimen name="overlay_height_m">24dp</dimen>
+    <dimen name="preference_height">48dp</dimen>
+
+    <!-- The padding on the global screenshot background image -->
+    <dimen name="global_screenshot_bg_padding">20dp</dimen>
+    <!-- Width for the notification panel and related windows -->
+    <dimen name="match_parent">-1px</dimen>
+    <dimen name="standard_notification_panel_width">416dp</dimen> <!-- includes notification_side_padding on each side -->
+    <dimen name="notification_panel_width">@dimen/match_parent</dimen>
+    <!-- Height of a large notification in the status bar -->
+    <dimen name="notification_max_height">256dp</dimen>
+    <dimen name="default_float_view_size">48dp</dimen>
+    <dimen name="white_note_padding_bottom">24dip</dimen>
+
+    <dimen name="no_results_width">260.0dip</dimen>
+    <dimen name="white_note_width">60.0dip</dimen>
+    <dimen name="white_note_height">60.0dip</dimen>
+    <dimen name="no_results_text_padding_bottom">16.0dip</dimen>
+    <dimen name="no_results_text_main">20.0sp</dimen>
+    <dimen name="no_results_text_secondary">14.0sp</dimen>
+</resources>
