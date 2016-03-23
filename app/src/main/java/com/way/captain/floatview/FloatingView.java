@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 RECRUIT LIFESTYLE CO., LTD.
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *            http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,60 +49,49 @@ import java.lang.ref.WeakReference;
 public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreDrawListener {
 
     /**
-     * 移動に最低必要なしきい値(dp)
-     */
-    private static final float MOVE_THRESHOLD_DP = 8.0f;
-
-    /**
-     * 押下時の拡大率
-     */
-    private static final float SCALE_PRESSED = 0.9f;
-
-    /**
-     * 通常時の拡大率
-     */
-    private static final float SCALE_NORMAL = 1.0f;
-
-    /**
-     * 画面端移動アニメーションの時間
-     */
-    private static final long MOVE_TO_EDGE_DURATION = 450L;
-
-    /**
-     * 画面端移動アニメーションの係数
-     */
-    private static final float MOVE_TO_EDGE_OVERSHOOT_TENSION = 1.25f;
-
-    /**
      * 通常状態
      */
     static final int STATE_NORMAL = 0;
-
     /**
      * 重なり状態
      */
     static final int STATE_INTERSECTING = 1;
-
     /**
      * 終了状態
      */
     static final int STATE_FINISHING = 2;
-
-    /**
-     * 長押し判定とする時間(移動操作も考慮して通常の1.5倍)
-     */
-    private static final int LONG_PRESS_TIMEOUT = (int) (1.5f * ViewConfiguration.getLongPressTimeout());
-
     /**
      * デフォルトのX座標を表す値
      */
     static final int DEFAULT_X = Integer.MIN_VALUE;
-
     /**
      * デフォルトのY座標を表す値
      */
     static final int DEFAULT_Y = Integer.MIN_VALUE;
-
+    /**
+     * 移動に最低必要なしきい値(dp)
+     */
+    private static final float MOVE_THRESHOLD_DP = 8.0f;
+    /**
+     * 押下時の拡大率
+     */
+    private static final float SCALE_PRESSED = 0.9f;
+    /**
+     * 通常時の拡大率
+     */
+    private static final float SCALE_NORMAL = 1.0f;
+    /**
+     * 画面端移動アニメーションの時間
+     */
+    private static final long MOVE_TO_EDGE_DURATION = 450L;
+    /**
+     * 画面端移動アニメーションの係数
+     */
+    private static final float MOVE_TO_EDGE_OVERSHOOT_TENSION = 1.25f;
+    /**
+     * 長押し判定とする時間(移動操作も考慮して通常の1.5倍)
+     */
+    private static final int LONG_PRESS_TIMEOUT = (int) (1.5f * ViewConfiguration.getLongPressTimeout());
     /**
      * WindowManager
      */
@@ -117,12 +106,34 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
      * DisplayMetrics
      */
     private final DisplayMetrics mMetrics;
-
+    /**
+     * ステータスバーの高さ
+     */
+    private final int mStatusBarHeight;
+    /**
+     * Interpolator
+     */
+    private final TimeInterpolator mMoveEdgeInterpolator;
+    /**
+     * 移動限界を表すRect
+     */
+    private final Rect mMoveLimitRect;
+    /**
+     * 表示位置（画面端）の限界を表すRect
+     */
+    private final Rect mPositionLimitRect;
+    /**
+     * FloatingViewのアニメーションを行うハンドラ
+     */
+    private final FloatingAnimationHandler mAnimationHandler;
+    /**
+     * 長押しを判定するためのハンドラ
+     */
+    private final LongPressHandler mLongPressHandler;
     /**
      * 押下処理を通過しているかチェックするための時間
      */
     private long mTouchDownTime;
-
     /**
      * スクリーン押下X座標(移動量判定用)
      */
@@ -135,7 +146,6 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
      * 一度移動を始めたフラグ
      */
     private boolean mIsMoveAccept;
-
     /**
      * スクリーンのタッチX座標
      */
@@ -160,52 +170,18 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
      * 初期表示のY座標
      */
     private int mInitY;
-
-    /**
-     * ステータスバーの高さ
-     */
-    private final int mStatusBarHeight;
-
     /**
      * 左・右端に寄せるアニメーション
      */
     private ValueAnimator mMoveEdgeAnimator;
-
-    /**
-     * Interpolator
-     */
-    private final TimeInterpolator mMoveEdgeInterpolator;
-
-    /**
-     * 移動限界を表すRect
-     */
-    private final Rect mMoveLimitRect;
-
-    /**
-     * 表示位置（画面端）の限界を表すRect
-     */
-    private final Rect mPositionLimitRect;
-
     /**
      * ドラッグ可能フラグ
      */
     private boolean mIsDraggable;
-
     /**
      * 形を表す係数
      */
     private float mShape;
-
-    /**
-     * FloatingViewのアニメーションを行うハンドラ
-     */
-    private final FloatingAnimationHandler mAnimationHandler;
-
-    /**
-     * 長押しを判定するためのハンドラ
-     */
-    private final LongPressHandler mLongPressHandler;
-
     /**
      * 画面端をオーバーするマージン
      */
@@ -636,21 +612,21 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
     }
 
     /**
-     * Viewの形を表す定数
-     *
-     * @param shape SHAPE_CIRCLE or SHAPE_RECTANGLE
-     */
-    public void setShape(float shape) {
-        mShape = shape;
-    }
-
-    /**
      * Viewの形を取得します。
      *
      * @return SHAPE_CIRCLE or SHAPE_RECTANGLE
      */
     public float getShape() {
         return mShape;
+    }
+
+    /**
+     * Viewの形を表す定数
+     *
+     * @param shape SHAPE_CIRCLE or SHAPE_RECTANGLE
+     */
+    public void setShape(float shape) {
+        mShape = shape;
     }
 
     /**
@@ -787,61 +763,50 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
          * アニメーション更新を表す定数
          */
         private static final int TYPE_UPDATE = 2;
-
-        /**
-         * アニメーションを開始した時間
-         */
-        private long mStartTime;
-
-        /**
-         * アニメーションを始めた時点のTransitionX
-         */
-        private float mStartX;
-
-        /**
-         * アニメーションを始めた時点のTransitionY
-         */
-        private float mStartY;
-
-        /**
-         * 実行中のアニメーションのコード
-         */
-        private int mStartedCode;
-
-        /**
-         * アニメーション状態フラグ
-         */
-        private int mState;
-
-        /**
-         * 現在の状態
-         */
-        private boolean mIsChangeState;
-
-        /**
-         * 追従対象のX座標
-         */
-        private float mTouchPositionX;
-
-        /**
-         * 追従対象のY座標
-         */
-        private float mTouchPositionY;
-
-        /**
-         * 追従対象のX座標
-         */
-        private float mTargetPositionX;
-
-        /**
-         * 追従対象のY座標
-         */
-        private float mTargetPositionY;
-
         /**
          * FloatingView
          */
         private final WeakReference<FloatingView> mFloatingView;
+        /**
+         * アニメーションを開始した時間
+         */
+        private long mStartTime;
+        /**
+         * アニメーションを始めた時点のTransitionX
+         */
+        private float mStartX;
+        /**
+         * アニメーションを始めた時点のTransitionY
+         */
+        private float mStartY;
+        /**
+         * 実行中のアニメーションのコード
+         */
+        private int mStartedCode;
+        /**
+         * アニメーション状態フラグ
+         */
+        private int mState;
+        /**
+         * 現在の状態
+         */
+        private boolean mIsChangeState;
+        /**
+         * 追従対象のX座標
+         */
+        private float mTouchPositionX;
+        /**
+         * 追従対象のY座標
+         */
+        private float mTouchPositionY;
+        /**
+         * 追従対象のX座標
+         */
+        private float mTargetPositionX;
+        /**
+         * 追従対象のY座標
+         */
+        private float mTargetPositionY;
 
         /**
          * コンストラクタ
@@ -850,6 +815,39 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
             mFloatingView = new WeakReference<>(floatingView);
             mStartedCode = ANIMATION_NONE;
             mState = STATE_NORMAL;
+        }
+
+        /**
+         * アニメーション時間から求められる位置を計算します。
+         *
+         * @param timeRate 時間比率
+         * @return ベースとなる係数(0.0から1.0＋α)
+         */
+        private static float calcAnimationPosition(float timeRate) {
+            final float position;
+            // y=0.55sin(8.0564x-π/2)+0.55
+            if (timeRate <= 0.4) {
+                position = (float) (0.55 * Math.sin(8.0564 * timeRate - Math.PI / 2) + 0.55);
+            }
+            // y=4(0.417x-0.341)^2-4(0.417-0.341)^2+1
+            else {
+                position = (float) (4 * Math.pow(0.417 * timeRate - 0.341, 2) - 4 * Math.pow(0.417 - 0.341, 2) + 1);
+            }
+            return position;
+        }
+
+        /**
+         * 送信するメッセージを生成します。
+         *
+         * @param animation ANIMATION_IN_TOUCH
+         * @param type      TYPE_FIRST,TYPE_UPDATE
+         * @return Message
+         */
+        private static Message newMessage(int animation, int type) {
+            final Message message = Message.obtain();
+            message.what = animation;
+            message.arg1 = type;
+            return message;
         }
 
         /**
@@ -910,25 +908,6 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
         }
 
         /**
-         * アニメーション時間から求められる位置を計算します。
-         *
-         * @param timeRate 時間比率
-         * @return ベースとなる係数(0.0から1.0＋α)
-         */
-        private static float calcAnimationPosition(float timeRate) {
-            final float position;
-            // y=0.55sin(8.0564x-π/2)+0.55
-            if (timeRate <= 0.4) {
-                position = (float) (0.55 * Math.sin(8.0564 * timeRate - Math.PI / 2) + 0.55);
-            }
-            // y=4(0.417x-0.341)^2-4(0.417-0.341)^2+1
-            else {
-                position = (float) (4 * Math.pow(0.417 * timeRate - 0.341, 2) - 4 * Math.pow(0.417 - 0.341, 2) + 1);
-            }
-            return position;
-        }
-
-        /**
          * アニメーションのメッセージを送信します。
          *
          * @param animation   ANIMATION_IN_TOUCH
@@ -945,20 +924,6 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
          */
         void sendAnimationMessage(int animation) {
             sendMessage(newMessage(animation, TYPE_FIRST));
-        }
-
-        /**
-         * 送信するメッセージを生成します。
-         *
-         * @param animation ANIMATION_IN_TOUCH
-         * @param type      TYPE_FIRST,TYPE_UPDATE
-         * @return Message
-         */
-        private static Message newMessage(int animation, int type) {
-            final Message message = Message.obtain();
-            message.what = animation;
-            message.arg1 = type;
-            return message;
         }
 
         /**
@@ -984,6 +949,15 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
         }
 
         /**
+         * 現在の状態を返します。
+         *
+         * @return STATE_NORMAL or STATE_INTERSECTING or STATE_FINISHING
+         */
+        int getState() {
+            return mState;
+        }
+
+        /**
          * アニメーション状態を設定します。
          *
          * @param newState STATE_NORMAL or STATE_INTERSECTING or STATE_FINISHING
@@ -995,15 +969,6 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
             }
             mState = newState;
         }
-
-        /**
-         * 現在の状態を返します。
-         *
-         * @return STATE_NORMAL or STATE_INTERSECTING or STATE_FINISHING
-         */
-        int getState() {
-            return mState;
-        }
     }
 
     /**
@@ -1013,14 +978,13 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
     private static class LongPressHandler extends Handler {
 
         /**
-         * TrashView
-         */
-        private WeakReference<FloatingView> mFloatingView;
-
-        /**
          * アニメーションなしの状態を表す定数
          */
         private static final int LONG_PRESSED = 0;
+        /**
+         * TrashView
+         */
+        private WeakReference<FloatingView> mFloatingView;
 
         /**
          * コンストラクタ

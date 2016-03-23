@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.way.captain.R;
 import com.way.captain.fragment.SettingsFragment;
-import com.way.captain.service.ChatHeadService;
 
 import java.nio.ByteBuffer;
 

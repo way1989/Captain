@@ -40,6 +40,44 @@ public class MovementBounds {
     private float mRotation;
     private float mPivotX, mPivotY;
 
+    public static void setupInitialMovement(State state, Settings settings) {
+        state.get(MATRIX);
+        Rect pos = getPositionWithGravity(MATRIX, settings);
+        state.translateTo(pos.left, pos.top);
+    }
+
+    /**
+     * Returns image position within the viewport area with gravity applied,
+     * not taking into account image position specified by matrix.
+     */
+    private static Rect getPositionWithGravity(Matrix matrix, Settings settings) {
+        RECT_TMP_F.set(0, 0, settings.getImageW(), settings.getImageH());
+        matrix.mapRect(RECT_TMP_F);
+        final int w = Math.round(RECT_TMP_F.width());
+        final int h = Math.round(RECT_TMP_F.height());
+
+        // Calculating image position basing on gravity
+        RECT_TMP.set(0, 0, settings.getViewportW(), settings.getViewportH());
+        Gravity.apply(settings.getGravity(), w, h, RECT_TMP, RECT_POS);
+
+        return RECT_POS;
+    }
+
+    public static Rect getMovementAreaWithGravity(Settings settings) {
+        // Calculating movement area position basing on gravity
+        RECT_TMP.set(0, 0, settings.getViewportW(), settings.getViewportH());
+        Gravity.apply(settings.getGravity(),
+                settings.getMovementAreaW(), settings.getMovementAreaH(), RECT_TMP, RECT_MOV_AREA);
+        return RECT_MOV_AREA;
+    }
+
+    public static Point getDefaultPivot(Settings settings) {
+        // Calculating movement area position basing on gravity
+        Rect movArea = getMovementAreaWithGravity(settings);
+        Gravity.apply(settings.getGravity(), 0, 0, movArea, RECT_TMP);
+        POINT_PIVOT.set(RECT_TMP.left, RECT_TMP.top);
+        return POINT_PIVOT;
+    }
 
     /**
      * Restricts x & y coordinates to current bounds (see {@link #setup(State, Settings)}).
@@ -175,46 +213,6 @@ public class MovementBounds {
         mRotation = bounds.mRotation;
         mPivotX = bounds.mPivotX;
         mPivotY = bounds.mPivotY;
-    }
-
-
-    public static void setupInitialMovement(State state, Settings settings) {
-        state.get(MATRIX);
-        Rect pos = getPositionWithGravity(MATRIX, settings);
-        state.translateTo(pos.left, pos.top);
-    }
-
-    /**
-     * Returns image position within the viewport area with gravity applied,
-     * not taking into account image position specified by matrix.
-     */
-    private static Rect getPositionWithGravity(Matrix matrix, Settings settings) {
-        RECT_TMP_F.set(0, 0, settings.getImageW(), settings.getImageH());
-        matrix.mapRect(RECT_TMP_F);
-        final int w = Math.round(RECT_TMP_F.width());
-        final int h = Math.round(RECT_TMP_F.height());
-
-        // Calculating image position basing on gravity
-        RECT_TMP.set(0, 0, settings.getViewportW(), settings.getViewportH());
-        Gravity.apply(settings.getGravity(), w, h, RECT_TMP, RECT_POS);
-
-        return RECT_POS;
-    }
-
-    public static Rect getMovementAreaWithGravity(Settings settings) {
-        // Calculating movement area position basing on gravity
-        RECT_TMP.set(0, 0, settings.getViewportW(), settings.getViewportH());
-        Gravity.apply(settings.getGravity(),
-                settings.getMovementAreaW(), settings.getMovementAreaH(), RECT_TMP, RECT_MOV_AREA);
-        return RECT_MOV_AREA;
-    }
-
-    public static Point getDefaultPivot(Settings settings) {
-        // Calculating movement area position basing on gravity
-        Rect movArea = getMovementAreaWithGravity(settings);
-        Gravity.apply(settings.getGravity(), 0, 0, movArea, RECT_TMP);
-        POINT_PIVOT.set(RECT_TMP.left, RECT_TMP.top);
-        return POINT_PIVOT;
     }
 
 }

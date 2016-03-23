@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,8 +24,6 @@ import com.way.captain.widget.IPopupMenuCallback;
 import com.way.captain.widget.PopupMenuButton;
 import com.way.captain.widget.SimpleTagImageView;
 
-import java.util.ArrayList;
-
 /**
  * Created by android on 16-2-1.
  */
@@ -36,6 +33,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
     //private ArrayList<VideoInfos> mVideosInfos;
     private VideoDataProvider mDataProvider = new VideoDataProvider();
     private OnItemClickListener mListener;
+    /**
+     * Used to listen to the pop up menu callbacks
+     */
+    private IPopupMenuCallback.IListener mPopupMenuListener;
 
     public VideoAdapter(Context context, OnItemClickListener listener) {
         mContext = context;
@@ -158,6 +159,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         holder.itemView.setBackgroundResource(bgRes);
     }
 
+    @Override
+    public void setPopupMenuClickedListener(IPopupMenuCallback.IListener listener) {
+        mPopupMenuListener = listener;
+    }
+
+
     public interface OnItemClickListener {
         void onItemClick(VideoInfos videoInfos, int position, View image);
 
@@ -194,7 +201,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         }
     }
 
-
     private static class SwipeLeftResultAction extends SwipeResultActionMoveToSwipedDirection {
         private final int mPosition;
         private VideoAdapter mAdapter;
@@ -228,13 +234,5 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             // clear the references
             mAdapter = null;
         }
-    }
-    /**
-     * Used to listen to the pop up menu callbacks
-     */
-    private IPopupMenuCallback.IListener mPopupMenuListener;
-    @Override
-    public void setPopupMenuClickedListener(IPopupMenuCallback.IListener listener) {
-        mPopupMenuListener = listener;
     }
 }

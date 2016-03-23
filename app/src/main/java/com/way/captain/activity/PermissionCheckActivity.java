@@ -17,7 +17,6 @@
 package com.way.captain.activity;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -88,6 +87,7 @@ public class PermissionCheckActivity extends BaseActivity {
             return;
         }
     }
+
     @TargetApi(Build.VERSION_CODES.M)
     private void tryRequestPermission() {
         final String[] missingPermissions = OsUtil.getMissingRequiredPermissions();
@@ -124,7 +124,9 @@ public class PermissionCheckActivity extends BaseActivity {
         }
     }
 
-    /** Returns true if the redirecting was performed */
+    /**
+     * Returns true if the redirecting was performed
+     */
     private boolean redirectIfNeeded() {
         if (!OsUtil.hasRequiredPermissions()) {
             return false;
@@ -136,7 +138,7 @@ public class PermissionCheckActivity extends BaseActivity {
 
     private void redirect() {
         //UIIntents.get().launchConversationListActivity(this);
-        Intent i = new Intent(this,MainActivity.class);
+        Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
     }

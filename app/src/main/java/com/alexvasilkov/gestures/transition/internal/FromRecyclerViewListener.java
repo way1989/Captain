@@ -22,8 +22,8 @@ public class FromRecyclerViewListener<ID> implements ViewsCoordinator.OnRequestV
     private boolean mScrollHalfVisibleItems;
 
     public FromRecyclerViewListener(@NonNull RecyclerView recyclerView,
-            @NonNull ViewsTracker<ID> tracker,
-            @NonNull ViewsTransitionAnimator<ID> animator) {
+                                    @NonNull ViewsTracker<ID> tracker,
+                                    @NonNull ViewsTransitionAnimator<ID> animator) {
         mRecyclerView = recyclerView;
         mTracker = tracker;
         mAnimator = animator;

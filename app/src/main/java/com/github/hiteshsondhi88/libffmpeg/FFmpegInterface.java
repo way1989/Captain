@@ -1,15 +1,16 @@
 package com.github.hiteshsondhi88.libffmpeg;
 
-import java.util.Map;
-
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
+
+import java.util.Map;
 
 @SuppressWarnings("unused")
 interface FFmpegInterface {
 
     /**
      * Load binary to the device according to archituecture. This also updates FFmpeg binary if the binary on device have old version.
+     *
      * @param ffmpegLoadBinaryResponseHandler {@link FFmpegLoadBinaryResponseHandler}
      * @throws FFmpegNotSupportedException
      */
@@ -17,8 +18,9 @@ interface FFmpegInterface {
 
     /**
      * Executes a command
-     * @param environvenmentVars Environment variables
-     * @param cmd command to execute
+     *
+     * @param environvenmentVars           Environment variables
+     * @param cmd                          command to execute
      * @param ffmpegExecuteResponseHandler {@link FFmpegExecuteResponseHandler}
      * @throws FFmpegCommandAlreadyRunningException
      */
@@ -26,7 +28,8 @@ interface FFmpegInterface {
 
     /**
      * Executes a command
-     * @param cmd command to execute
+     *
+     * @param cmd                          command to execute
      * @param ffmpegExecuteResponseHandler {@link FFmpegExecuteResponseHandler}
      * @throws FFmpegCommandAlreadyRunningException
      */
@@ -34,6 +37,7 @@ interface FFmpegInterface {
 
     /**
      * Tells FFmpeg version currently on device
+     *
      * @return FFmpeg version currently on device
      * @throws FFmpegCommandAlreadyRunningException
      */
@@ -41,24 +45,28 @@ interface FFmpegInterface {
 
     /**
      * Tells FFmpeg version shipped with current library
+     *
      * @return FFmpeg version shipped with Library
      */
     public String getLibraryFFmpegVersion();
 
     /**
      * Checks if FFmpeg command is Currently running
+     *
      * @return true if FFmpeg command is running
      */
     public boolean isFFmpegCommandRunning();
 
     /**
      * Kill Running FFmpeg process
+     *
      * @return true if process is killed successfully
      */
     public boolean killRunningProcesses();
 
     /**
      * Timeout for FFmpeg process, should be minimum of 10 seconds
+     *
      * @param timeout in milliseconds
      */
     public void setTimeout(long timeout);

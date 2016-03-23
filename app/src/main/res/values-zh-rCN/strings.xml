@@ -85,4 +85,8 @@
     <string name="empty_generic_main">无数据</string>
     <string name="empty_generic_secondary">无数据</string>
     <string name="twice_press_exit">再按一次退出</string>
+	<string name="stop">停止</string>
+	<string name="insufficient_storage">存储空间不足</string>
+	<string name="video_length">视频长度: %s</string>
+
 </resources>

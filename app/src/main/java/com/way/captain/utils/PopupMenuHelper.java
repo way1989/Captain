@@ -16,8 +16,6 @@
 package com.way.captain.utils;
 
 import android.app.Activity;
-import android.content.Context;
-import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +32,7 @@ import com.way.captain.R;
 public abstract class PopupMenuHelper implements PopupMenu.OnMenuItemClickListener {
     protected Activity mActivity;
     protected PopupMenuType mType;
+
     public PopupMenuHelper(final Activity activity) {
         mActivity = activity;
     }

@@ -34,10 +34,9 @@ import com.alexvasilkov.gestures.views.utils.ViewClipHelper;
  */
 public class GestureImageView extends ImageView implements GestureView, ClipView, AnimatorView {
 
-    private GestureControllerForPager mController;
     private final ViewClipHelper mClipHelper = new ViewClipHelper(this);
     private final Matrix mImageMatrix = new Matrix();
-
+    private GestureControllerForPager mController;
     private ViewPositionAnimator mPositionAnimator;
 
     public GestureImageView(Context context) {
@@ -65,6 +64,15 @@ public class GestureImageView extends ImageView implements GestureView, ClipView
         });
 
         setScaleType(ScaleType.MATRIX);
+    }
+
+    @SuppressWarnings("deprecation")
+    private static Drawable getDrawable(Context context, @DrawableRes int id) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return context.getDrawable(id);
+        } else {
+            return context.getResources().getDrawable(id);
+        }
     }
 
     private void ensureControllerCreated() {
@@ -113,7 +121,7 @@ public class GestureImageView extends ImageView implements GestureView, ClipView
      *
      * @deprecated Use {@link #crop()} method instead.
      */
-    @SuppressWarnings({ "deprecation", "unused" }) // Public API
+    @SuppressWarnings({"deprecation", "unused"}) // Public API
     @Deprecated
     public void getSnapshot(OnSnapshotLoadedListener listener) {
         if (getDrawable() != null) {
@@ -180,16 +188,6 @@ public class GestureImageView extends ImageView implements GestureView, ClipView
     protected void applyState(State state) {
         state.get(mImageMatrix);
         setImageMatrix(mImageMatrix);
-    }
-
-
-    @SuppressWarnings("deprecation")
-    private static Drawable getDrawable(Context context, @DrawableRes int id) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return context.getDrawable(id);
-        } else {
-            return context.getResources().getDrawable(id);
-        }
     }
 
 

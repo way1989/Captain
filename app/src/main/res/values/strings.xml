@@ -99,4 +99,7 @@
     <string name="gif_size_tips">The more, the bigger Gif</string>
     <string name="default_values">Default</string>
     <string name="twice_press_exit">Press twice to exit!</string>
+    <string name="stop">Stop</string>
+    <string name="video_length">Video length: %s</string>
+    <string name="not_enough_storage">Not enough storage available</string>
 </resources>

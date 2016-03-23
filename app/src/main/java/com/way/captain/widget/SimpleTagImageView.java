@@ -28,13 +28,13 @@ public class SimpleTagImageView extends ImageView {
 
     public static final String TAG = "SimpleTagImageView";
 
-    public  static final byte LEFT_TOP = 0x00;
+    public static final byte LEFT_TOP = 0x00;
 
-    public  static final byte RIGHT_TOP = 0x01;
+    public static final byte RIGHT_TOP = 0x01;
 
-    public  static final byte LEFT_BOTTOM = 0x02;
+    public static final byte LEFT_BOTTOM = 0x02;
 
-    public  static final byte RIGHT_BOTTOM = 0x03;
+    public static final byte RIGHT_BOTTOM = 0x03;
 
     private static final float THE_SQUARE_ROOT_OF_2 = (float) Math.sqrt(2);
 
@@ -95,18 +95,18 @@ public class SimpleTagImageView extends ImageView {
     public SimpleTagImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mDensity = context.getResources().getDisplayMetrics().density;
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SimpleTagImageView,defStyleAttr,0);
-        mTagOrientation = a.getInteger(R.styleable.SimpleTagImageView_simple_tag_orientation,0);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SimpleTagImageView, defStyleAttr, 0);
+        mTagOrientation = a.getInteger(R.styleable.SimpleTagImageView_simple_tag_orientation, 0);
         mTagWidth = a.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_width, dip2px(DEFAULT_TAG_WIDTH));
-        mCornerDistance = a.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_corner_distance,dip2px(DEFAULT_CORNER_DISTANCE));
-        mTagBackgroundColor = a.getColor(R.styleable.SimpleTagImageView_simple_tag_background_color,DEFAULT_TAG_BACKGROUND_COLOR);
+        mCornerDistance = a.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_corner_distance, dip2px(DEFAULT_CORNER_DISTANCE));
+        mTagBackgroundColor = a.getColor(R.styleable.SimpleTagImageView_simple_tag_background_color, DEFAULT_TAG_BACKGROUND_COLOR);
         mTagText = a.getString(R.styleable.SimpleTagImageView_simple_tag_text);
         mTagTextSize = a.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_textSize, dip2px(DEFAULT_TAG_TEXT_SIZE));
         mTagTextColor = a.getColor(R.styleable.SimpleTagImageView_simple_tag_textColor, DEFAULT_TAG_TEXT_COLOR);
-        mTagEnable = a.getBoolean(R.styleable.SimpleTagImageView_simple_tag_enable,true);
-        mRoundRadius = a.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_round_radius,0);
+        mTagEnable = a.getBoolean(R.styleable.SimpleTagImageView_simple_tag_enable, true);
+        mRoundRadius = a.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_round_radius, 0);
         a.recycle();
-        if(TextUtils.isEmpty(mTagText))mTagText = "";
+        if (TextUtils.isEmpty(mTagText)) mTagText = "";
         mPaint = new Paint();
         mPath = new Path();
         mTextPaint = new Paint();
@@ -116,8 +116,11 @@ public class SimpleTagImageView extends ImageView {
         mRoundRect = new RectF();
     }
 
+    public int getTagTextSize() {
+        return mTagTextSize;
+    }
+
     /**
-     *
      * @param textSize unit:dip
      */
     public void setTagTextSize(int textSize) {
@@ -125,26 +128,20 @@ public class SimpleTagImageView extends ImageView {
         invalidate();
     }
 
-    public int getTagTextSize(){
-        return mTagTextSize;
-    }
-
     /**
-     *
-     * @param cornerDistance unit:dip
-     */
-    public void setCornerDistance(int cornerDistance) {
-        if(this.mCornerDistance == cornerDistance)return;
-        this.mCornerDistance = dip2px(cornerDistance);
-        invalidate();
-    }
-
-    /**
-     *
      * @return unit:dip
      */
     public int getCornerDistance() {
         return px2dip(this.mCornerDistance);
+    }
+
+    /**
+     * @param cornerDistance unit:dip
+     */
+    public void setCornerDistance(int cornerDistance) {
+        if (this.mCornerDistance == cornerDistance) return;
+        this.mCornerDistance = dip2px(cornerDistance);
+        invalidate();
     }
 
     public int getTagTextColor() {
@@ -152,7 +149,7 @@ public class SimpleTagImageView extends ImageView {
     }
 
     public void setTagTextColor(int tagTextColor) {
-        if(this.mTagTextColor == tagTextColor)return;
+        if (this.mTagTextColor == tagTextColor) return;
         this.mTagTextColor = tagTextColor;
         invalidate();
     }
@@ -161,20 +158,20 @@ public class SimpleTagImageView extends ImageView {
         return this.mTagText;
     }
 
-    public void setTagText(String tagText){
-        if(tagText.equals(this.mTagText))return;
+    public void setTagText(String tagText) {
+        if (tagText.equals(this.mTagText)) return;
         this.mTagText = tagText;
-        invalidate();
-    }
-
-    public void setTagBackgroundColor(int tagBackgroundColor) {
-        if(this.mTagBackgroundColor == tagBackgroundColor)return;
-        this.mTagBackgroundColor = tagBackgroundColor;
         invalidate();
     }
 
     public int getTagBackgroundColor() {
         return this.mTagBackgroundColor;
+    }
+
+    public void setTagBackgroundColor(int tagBackgroundColor) {
+        if (this.mTagBackgroundColor == tagBackgroundColor) return;
+        this.mTagBackgroundColor = tagBackgroundColor;
+        invalidate();
     }
 
     /**
@@ -185,7 +182,6 @@ public class SimpleTagImageView extends ImageView {
     }
 
     /**
-     *
      * @param tagWidth unit:dip
      */
     public void setTagWidth(int tagWidth) {
@@ -194,31 +190,24 @@ public class SimpleTagImageView extends ImageView {
     }
 
     /**
-     * @return  0 : left_top
-     *          1 : right_top
-     *          2 : left_bottom
-     *          3 : right_bottom
+     * @return 0 : left_top
+     * 1 : right_top
+     * 2 : left_bottom
+     * 3 : right_bottom
      */
     public int getTagOrientation() {
         return mTagOrientation;
     }
 
     /**
-     *
      * @param tagOrientation {@link #LEFT_TOP} or
      *                       {@link #LEFT_BOTTOM} or
      *                       {@link #RIGHT_TOP} or
      *                       {@link #RIGHT_BOTTOM}
      */
     public void setTagOrientation(int tagOrientation) {
-        if(tagOrientation == this.mTagOrientation)return;
+        if (tagOrientation == this.mTagOrientation) return;
         this.mTagOrientation = tagOrientation;
-        invalidate();
-    }
-
-    public void setTagEnable(boolean tagEnable) {
-        if(this.mTagEnable == tagEnable) return ;
-        this.mTagEnable = tagEnable;
         invalidate();
     }
 
@@ -226,34 +215,40 @@ public class SimpleTagImageView extends ImageView {
         return this.mTagEnable;
     }
 
-    public  int getTagRoundRadius() {
+    public void setTagEnable(boolean tagEnable) {
+        if (this.mTagEnable == tagEnable) return;
+        this.mTagEnable = tagEnable;
+        invalidate();
+    }
+
+    public int getTagRoundRadius() {
         return this.mRoundRadius;
     }
 
     public void setTagRoundRadius(int roundRadius) {
-        if(this.mRoundRadius == roundRadius) return;
+        if (this.mRoundRadius == roundRadius) return;
         this.mRoundRadius = roundRadius;
         invalidate();
     }
 
     @Override
     protected void onDraw(@SuppressWarnings("NullableProblems") Canvas mCanvas) {
-        if(mRoundRadius == 0) {
+        if (mRoundRadius == 0) {
             super.onDraw(mCanvas);
-        }else {
+        } else {
             Drawable d = getDrawable();
-            if(d == null) return;
-            if(d.getIntrinsicWidth() == 0 || d.getIntrinsicHeight() == 0) return;
+            if (d == null) return;
+            if (d.getIntrinsicWidth() == 0 || d.getIntrinsicHeight() == 0) return;
             setupBitmapPaint();
-            mRoundRect.set(getPaddingLeft(),getPaddingTop(),getMeasuredWidth() - getPaddingRight(),getMeasuredHeight() - getPaddingBottom());
+            mRoundRect.set(getPaddingLeft(), getPaddingTop(), getMeasuredWidth() - getPaddingRight(), getMeasuredHeight() - getPaddingBottom());
             mCanvas.drawRoundRect(mRoundRect, mRoundRadius, mRoundRadius, mBitmapPaint);
         }
 
-        if(mTagWidth > 0 && mTagEnable) {
-            float rDistance = mCornerDistance + mTagWidth/2;
+        if (mTagWidth > 0 && mTagEnable) {
+            float rDistance = mCornerDistance + mTagWidth / 2;
             chooseTagOrientation(rDistance);
             mTextPaint.setTextSize(mTagTextSize);
-            mTextPaint.getTextBounds(mTagText,0,mTagText.length(),mTagTextBound);
+            mTextPaint.getTextBounds(mTagText, 0, mTagText.length(), mTagTextBound);
             mPaint.setDither(true);
             mPaint.setAntiAlias(true);
             mPaint.setColor(mTagBackgroundColor);
@@ -313,15 +308,15 @@ public class SimpleTagImageView extends ImageView {
         }
         Bitmap mBitmap = drawableToBitmap(drawable);
         BitmapShader mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        if(getScaleType() != ScaleType.FIT_XY){
-            Log.w(TAG,String.format("Now scale type just support fitXY,other type invalid"));
+        if (getScaleType() != ScaleType.FIT_XY) {
+            Log.w(TAG, String.format("Now scale type just support fitXY,other type invalid"));
         }
         //now scale type just support fitXY
         //todo support all scale type
         Matrix mMatrix = new Matrix();
         mMatrix.setScale(getWidth() * 1.0f / mBitmap.getWidth(), getHeight() * 1.0f / mBitmap.getHeight());
         mBitmapShader.setLocalMatrix(mMatrix);
-        if(mBitmapPaint == null) {
+        if (mBitmapPaint == null) {
             mBitmapPaint = new Paint();
             mBitmapPaint.setDither(false);
             mBitmapPaint.setAntiAlias(true);
@@ -330,11 +325,11 @@ public class SimpleTagImageView extends ImageView {
     }
 
     private int dip2px(int dip) {
-        return (int)(mDensity * dip + 0.5f);
+        return (int) (mDensity * dip + 0.5f);
     }
 
     private int px2dip(float px) {
-        return (int)(px/mDensity + 0.5f);
+        return (int) (px / mDensity + 0.5f);
     }
 
     private Bitmap drawableToBitmap(Drawable drawable) {

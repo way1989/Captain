@@ -32,10 +32,12 @@ public class GifPagerAdapter extends RecyclePagerAdapter<GifPagerAdapter.ViewHol
         mGifInfoses.addAll(productInfos);
         notifyDataSetChanged();
     }
+
     public void clearData() {
         mGifInfoses.clear();
         notifyDataSetChanged();
     }
+
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup container) {
         ViewHolder holder = new ViewHolder(container);

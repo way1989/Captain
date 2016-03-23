@@ -1,7 +1,10 @@
 package com.way.telecine;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.SystemClock;
@@ -35,6 +38,79 @@ final class OverlayView extends FrameLayout {
     private static final int COUNTDOWN_DELAY = 1000;
     private static final int NON_COUNTDOWN_DELAY = 500;
     private static final int DURATION_ENTER_EXIT = 300;
+    private final Listener listener;
+    private final boolean showCountDown;
+    BroadcastReceiver stopReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            listener.onStop();
+        }
+    };
+    private View mStartContainer;
+    private View mCancelButton;
+    private TextView mQualityTextView;
+    private View mStartButton;
+    private View mStopContainer;
+    private View mStopButton;
+    private TextView mCountDownTextView;
+    private TextView mRecordingTimeTextView;
+    private long mRecordingStartTime;
+    OnClickListener clickListener = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.record_overlay_cancel:
+                    onCancelClicked();
+                    break;
+                case R.id.record_overlay_start:
+                    onStartClicked();
+                    break;
+                case R.id.record_change_quality:
+                    int videoSizePercentageProvider = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SettingsFragment.VIDEO_SIZE_KEY, "100"));
+                    Log.i(TAG, "onClick... videoSizePercentageProvider = " + videoSizePercentageProvider);
+                    switch (videoSizePercentageProvider) {
+                        case 100:
+                            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString(SettingsFragment.VIDEO_SIZE_KEY, "50").commit();
+                            mQualityTextView.setText(R.string.float_record_normal_quality);
+                            break;
+                        case 75:
+                            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString(SettingsFragment.VIDEO_SIZE_KEY, "100").commit();
+                            mQualityTextView.setText(R.string.float_record_super_hd_quality);
+                            break;
+                        case 50:
+                            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString(SettingsFragment.VIDEO_SIZE_KEY, "75").commit();
+                            mQualityTextView.setText(R.string.float_record_hd_quality);
+                            break;
+                        default:
+                            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString(SettingsFragment.VIDEO_SIZE_KEY, "100").commit();
+                            mQualityTextView.setText(R.string.float_record_super_hd_quality);
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    //private int animationWidth;
+
+    private OverlayView(Context context, Listener listener, boolean showCountDown) {
+        super(context);
+        this.listener = listener;
+        this.showCountDown = showCountDown;
+
+        inflate(context, R.layout.float_screen_record_control, this);
+        initViews();
+//        animationWidth = getResources().getDimensionPixelOffset(R.dimen.overlay_width);
+//        if (getLayoutDirectionFromLocale(Locale.getDefault()) == LAYOUT_DIRECTION_RTL) {
+//            animationWidth = -animationWidth; // Account for animating in from
+//            // the other side of screen.
+//        }
+        CheatSheet.setup(mCancelButton);
+        CheatSheet.setup(mStartButton);
+    }
 
     static OverlayView create(Context context, Listener listener, boolean showCountDown) {
         return new OverlayView(context, listener, showCountDown);
@@ -67,56 +143,54 @@ final class OverlayView extends FrameLayout {
         return direction == LAYOUT_DIRECTION_RTL ? Gravity.LEFT : Gravity.RIGHT;
     }
 
-    interface Listener {
-        /**
-         * Called when cancel is clicked. This view is unusable once this
-         * callback is invoked.
-         */
-        void onCancel();
+    private static String millisecondToTimeString(long milliSeconds,
+                                                  boolean displayCentiSeconds) {
+        long seconds = milliSeconds / 1000; // round down to compute seconds
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long remainderMinutes = minutes - (hours * 60);
+        long remainderSeconds = seconds - (minutes * 60);
 
-        /**
-         * Called when start is clicked and it is appropriate to start
-         * recording. This view will hide itself completely before invoking this
-         * callback.
-         */
-        void onStart();
+        StringBuilder timeStringBuilder = new StringBuilder();
 
-        /**
-         * Called when stop is clicked. This view is unusable once this callback
-         * is invoked.
-         */
-        void onStop();
-    }
+        // Hours
+        if (hours > 0) {
+            if (hours < 10) {
+                timeStringBuilder.append('0');
+            }
+            timeStringBuilder.append(hours);
 
-    private View mStartContainer;
-    private View mCancelButton;
-    private TextView mQualityTextView;
-    private View mStartButton;
-    private View mStopContainer;
-    private View mStopButton;
-    private TextView mCountDownTextView;
-    private TextView mRecordingTimeTextView;
-    private long mRecordingStartTime;
+            timeStringBuilder.append(':');
+        } else {
+            //timeStringBuilder.append('0');
+            //timeStringBuilder.append('0');
+            //timeStringBuilder.append(':');
+        }
 
-    //private int animationWidth;
+        // Minutes
+        if (remainderMinutes < 10) {
+            timeStringBuilder.append('0');
+        }
+        timeStringBuilder.append(remainderMinutes);
+        timeStringBuilder.append(':');
 
-    private final Listener listener;
-    private final boolean showCountDown;
+        // Seconds
+        if (remainderSeconds < 10) {
+            timeStringBuilder.append('0');
+        }
+        timeStringBuilder.append(remainderSeconds);
 
-    private OverlayView(Context context, Listener listener, boolean showCountDown) {
-        super(context);
-        this.listener = listener;
-        this.showCountDown = showCountDown;
+        // Centi seconds
+        if (displayCentiSeconds) {
+            timeStringBuilder.append('.');
+            long remainderCentiSeconds = (milliSeconds - seconds * 1000) / 10;
+            if (remainderCentiSeconds < 10) {
+                timeStringBuilder.append('0');
+            }
+            timeStringBuilder.append(remainderCentiSeconds);
+        }
 
-        inflate(context, R.layout.float_screen_record_control, this);
-        initViews();
-//        animationWidth = getResources().getDimensionPixelOffset(R.dimen.overlay_width);
-//        if (getLayoutDirectionFromLocale(Locale.getDefault()) == LAYOUT_DIRECTION_RTL) {
-//            animationWidth = -animationWidth; // Account for animating in from
-//            // the other side of screen.
-//        }
-        CheatSheet.setup(mCancelButton);
-        CheatSheet.setup(mStartButton);
+        return timeStringBuilder.toString();
     }
 
     private void initViews() {
@@ -133,7 +207,7 @@ final class OverlayView extends FrameLayout {
         findViewById(R.id.record_change_quality).setOnClickListener(clickListener);
         int videoSizePercentageProvider = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SettingsFragment.VIDEO_SIZE_KEY, "100"));
         Log.i(TAG, "initView videoSizePercentageProvider = " + videoSizePercentageProvider);
-        switch (videoSizePercentageProvider){
+        switch (videoSizePercentageProvider) {
             case 100:
                 mQualityTextView.setText(R.string.float_record_super_hd_quality);
                 break;
@@ -149,45 +223,6 @@ final class OverlayView extends FrameLayout {
         }
     }
 
-    OnClickListener clickListener = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.record_overlay_cancel:
-                    onCancelClicked();
-                    break;
-                case R.id.record_overlay_start:
-                    onStartClicked();
-                    break;
-                case R.id.record_change_quality:
-                    int videoSizePercentageProvider = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(getContext()).getString(SettingsFragment.VIDEO_SIZE_KEY, "100"));
-                    Log.i(TAG, "onClick... videoSizePercentageProvider = " + videoSizePercentageProvider);
-                    switch (videoSizePercentageProvider){
-                        case 100:
-                            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString(SettingsFragment.VIDEO_SIZE_KEY, "50").commit();
-                            mQualityTextView.setText(R.string.float_record_normal_quality);
-                            break;
-                        case 75:
-                            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString(SettingsFragment.VIDEO_SIZE_KEY, "100").commit();
-                            mQualityTextView.setText(R.string.float_record_super_hd_quality);
-                            break;
-                        case 50:
-                            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString(SettingsFragment.VIDEO_SIZE_KEY, "75").commit();
-                            mQualityTextView.setText(R.string.float_record_hd_quality);
-                            break;
-                        default:
-                            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString(SettingsFragment.VIDEO_SIZE_KEY, "100").commit();
-                            mQualityTextView.setText(R.string.float_record_super_hd_quality);
-                            break;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -195,6 +230,14 @@ final class OverlayView extends FrameLayout {
         animate().alpha(1).setDuration(DURATION_ENTER_EXIT).setInterpolator(new DecelerateInterpolator());
         //setTranslationX(animationWidth);
         //animate().translationX(0).setDuration(DURATION_ENTER_EXIT).setInterpolator(new DecelerateInterpolator());
+        IntentFilter intentFilter = new IntentFilter(TelecineService.ACTION_STOP_SCREENRECORD);
+        getContext().registerReceiver(stopReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        getContext().unregisterReceiver(stopReceiver);
     }
 
     void onCancelClicked() {
@@ -298,53 +341,24 @@ final class OverlayView extends FrameLayout {
         }, actualNextUpdateDelay);
     }
 
-    private static String millisecondToTimeString(long milliSeconds,
-                                                  boolean displayCentiSeconds) {
-        long seconds = milliSeconds / 1000; // round down to compute seconds
-        long minutes = seconds / 60;
-        long hours = minutes / 60;
-        long remainderMinutes = minutes - (hours * 60);
-        long remainderSeconds = seconds - (minutes * 60);
+    interface Listener {
+        /**
+         * Called when cancel is clicked. This view is unusable once this
+         * callback is invoked.
+         */
+        void onCancel();
 
-        StringBuilder timeStringBuilder = new StringBuilder();
+        /**
+         * Called when start is clicked and it is appropriate to start
+         * recording. This view will hide itself completely before invoking this
+         * callback.
+         */
+        void onStart();
 
-        // Hours
-        if (hours > 0) {
-            if (hours < 10) {
-                timeStringBuilder.append('0');
-            }
-            timeStringBuilder.append(hours);
-
-            timeStringBuilder.append(':');
-        } else {
-            //timeStringBuilder.append('0');
-            //timeStringBuilder.append('0');
-            //timeStringBuilder.append(':');
-        }
-
-        // Minutes
-        if (remainderMinutes < 10) {
-            timeStringBuilder.append('0');
-        }
-        timeStringBuilder.append(remainderMinutes);
-        timeStringBuilder.append(':');
-
-        // Seconds
-        if (remainderSeconds < 10) {
-            timeStringBuilder.append('0');
-        }
-        timeStringBuilder.append(remainderSeconds);
-
-        // Centi seconds
-        if (displayCentiSeconds) {
-            timeStringBuilder.append('.');
-            long remainderCentiSeconds = (milliSeconds - seconds * 1000) / 10;
-            if (remainderCentiSeconds < 10) {
-                timeStringBuilder.append('0');
-            }
-            timeStringBuilder.append(remainderCentiSeconds);
-        }
-
-        return timeStringBuilder.toString();
+        /**
+         * Called when stop is clicked. This view is unusable once this callback
+         * is invoked.
+         */
+        void onStop();
     }
 }

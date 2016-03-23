@@ -52,6 +52,51 @@ public class ViewPosition {
         this.image = image;
     }
 
+    public static ViewPosition newInstance() {
+        return new ViewPosition();
+    }
+
+    /**
+     * Computes and returns view position. Note, that view should be already attached and laid out
+     * before calling this method.
+     */
+    public static ViewPosition from(@NonNull View view) {
+        ViewPosition pos = new ViewPosition();
+        pos.init(view);
+        return pos;
+    }
+
+    /**
+     * Computes view position and stores it in given {@code pos}. Note, that view should be already
+     * attached and laid out before calling this method.
+     *
+     * @return true if view position is changed, false otherwise
+     */
+    public static boolean apply(@NonNull ViewPosition pos, @NonNull View view) {
+        return pos.init(view);
+    }
+
+    /**
+     * Restores ViewPosition from the string created by {@link #pack()} method.
+     */
+    @SuppressWarnings("unused") // Public API
+    public static ViewPosition unpack(String str) {
+        String[] parts = TextUtils.split(str, SPLIT_PATTERN);
+        if (parts.length != 3) {
+            throw new IllegalArgumentException("Wrong ViewPosition string: " + str);
+        }
+
+        Rect view = Rect.unflattenFromString(parts[0]);
+        Rect viewport = Rect.unflattenFromString(parts[1]);
+        Rect image = Rect.unflattenFromString(parts[2]);
+
+        if (view == null || viewport == null || image == null) {
+            throw new IllegalArgumentException("Wrong ViewPosition string: " + str);
+        }
+
+        return new ViewPosition(view, viewport, image);
+    }
+
     public void set(@NonNull ViewPosition pos) {
         this.view.set(pos.view);
         this.viewport.set(pos.viewport);
@@ -108,30 +153,6 @@ public class ViewPosition {
         return !TMP_VIEW.equals(view);
     }
 
-    public static ViewPosition newInstance() {
-        return new ViewPosition();
-    }
-
-    /**
-     * Computes and returns view position. Note, that view should be already attached and laid out
-     * before calling this method.
-     */
-    public static ViewPosition from(@NonNull View view) {
-        ViewPosition pos = new ViewPosition();
-        pos.init(view);
-        return pos;
-    }
-
-    /**
-     * Computes view position and stores it in given {@code pos}. Note, that view should be already
-     * attached and laid out before calling this method.
-     *
-     * @return true if view position is changed, false otherwise
-     */
-    public static boolean apply(@NonNull ViewPosition pos, @NonNull View view) {
-        return pos.init(view);
-    }
-
     /**
      * Packs this ViewPosition into string, which can be passed i.e. between activities.
      *
@@ -141,28 +162,7 @@ public class ViewPosition {
         String viewStr = view.flattenToString();
         String viewportStr = viewport.flattenToString();
         String imageStr = image.flattenToString();
-        return TextUtils.join(DELIMITER, new String[] { viewStr, viewportStr, imageStr });
-    }
-
-    /**
-     * Restores ViewPosition from the string created by {@link #pack()} method.
-     */
-    @SuppressWarnings("unused") // Public API
-    public static ViewPosition unpack(String str) {
-        String[] parts = TextUtils.split(str, SPLIT_PATTERN);
-        if (parts.length != 3) {
-            throw new IllegalArgumentException("Wrong ViewPosition string: " + str);
-        }
-
-        Rect view = Rect.unflattenFromString(parts[0]);
-        Rect viewport = Rect.unflattenFromString(parts[1]);
-        Rect image = Rect.unflattenFromString(parts[2]);
-
-        if (view == null || viewport == null || image == null) {
-            throw new IllegalArgumentException("Wrong ViewPosition string: " + str);
-        }
-
-        return new ViewPosition(view, viewport, image);
+        return TextUtils.join(DELIMITER, new String[]{viewStr, viewportStr, imageStr});
     }
 
 }

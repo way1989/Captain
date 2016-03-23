@@ -14,10 +14,6 @@ enum CpuArch {
         this.sha1 = sha1;
     }
 
-    String getSha1(){
-        return sha1;
-    }
-
     static CpuArch fromString(String sha1) {
         if (!TextUtils.isEmpty(sha1)) {
             for (CpuArch cpuArch : CpuArch.values()) {
@@ -27,5 +23,9 @@ enum CpuArch {
             }
         }
         return NONE;
+    }
+
+    String getSha1() {
+        return sha1;
     }
 }

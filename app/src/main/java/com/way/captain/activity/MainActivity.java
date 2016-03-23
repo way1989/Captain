@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +44,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             transaction.replace(R.id.fragment_container, mFragment).commit();
         }
     };
+    private long mLastPressTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onResume();
 
     }
-    private long mLastPressTime;
+
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -93,11 +93,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             if (mFragment != null && mFragment.onBackPressed())
                 return;
             long time = System.currentTimeMillis();
-            if(time - mLastPressTime > 3000){
+            if (time - mLastPressTime > 3000) {
                 Snackbar.make(mDrawerLayout, R.string.twice_press_exit, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 mLastPressTime = time;
-            }else
+            } else
                 super.onBackPressed();
         }
     }

@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 RECRUIT LIFESTYLE CO., LTD.
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *            http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,26 +47,6 @@ import java.lang.ref.WeakReference;
 class TrashView extends FrameLayout implements ViewTreeObserver.OnPreDrawListener {
 
     /**
-     * 背景の高さ(dp)
-     */
-    private static final int BACKGROUND_HEIGHT = 164;
-
-    /**
-     * ターゲットを取り込む水平領域(dp)
-     */
-    private static final float TARGET_CAPTURE_HORIZONTAL_REGION = 30.0f;
-
-    /**
-     * ターゲットを取り込む垂直領域(dp)
-     */
-    private static final float TARGET_CAPTURE_VERTICAL_REGION = 4.0f;
-
-    /**
-     * 削除アイコンの拡大・縮小のアニメーション時間
-     */
-    private static final long TRASH_ICON_SCALE_DURATION_MILLIS = 200L;
-
-    /**
      * アニメーションなしの状態を表す定数
      */
     static final int ANIMATION_NONE = 0;
@@ -83,7 +63,22 @@ class TrashView extends FrameLayout implements ViewTreeObserver.OnPreDrawListene
      * 背景・削除アイコンなどを即時に消すことを表す定数
      */
     static final int ANIMATION_FORCE_CLOSE = 3;
-
+    /**
+     * 背景の高さ(dp)
+     */
+    private static final int BACKGROUND_HEIGHT = 164;
+    /**
+     * ターゲットを取り込む水平領域(dp)
+     */
+    private static final float TARGET_CAPTURE_HORIZONTAL_REGION = 30.0f;
+    /**
+     * ターゲットを取り込む垂直領域(dp)
+     */
+    private static final float TARGET_CAPTURE_VERTICAL_REGION = 4.0f;
+    /**
+     * 削除アイコンの拡大・縮小のアニメーション時間
+     */
+    private static final long TRASH_ICON_SCALE_DURATION_MILLIS = 200L;
     /**
      * 長押し判定とする時間
      */
@@ -123,42 +118,34 @@ class TrashView extends FrameLayout implements ViewTreeObserver.OnPreDrawListene
      * 重なりに応じて動作する削除アイコン
      */
     private final ImageView mActionTrashIconView;
-
-    /**
-     * ActionTrashIconの幅
-     */
-    private int mActionTrashIconBaseWidth;
-
-    /**
-     * ActionTrashIconの高さ
-     */
-    private int mActionTrashIconBaseHeight;
-
-    /**
-     * ActionTrashIconの最大拡大率
-     */
-    private float mActionTrashIconMaxScale;
-
     /**
      * 背景View
      */
     private final FrameLayout mBackgroundView;
-
-    /**
-     * 削除アイコンの枠内に入った時のアニメーション（拡大）
-     */
-    private ObjectAnimator mEnterScaleAnimator;
-
-    /**
-     * 削除アイコンの枠外に出た時のアニメーション（縮小）
-     */
-    private ObjectAnimator mExitScaleAnimator;
-
     /**
      * アニメーションを行うハンドラ
      */
     private final AnimationHandler mAnimationHandler;
-
+    /**
+     * ActionTrashIconの幅
+     */
+    private int mActionTrashIconBaseWidth;
+    /**
+     * ActionTrashIconの高さ
+     */
+    private int mActionTrashIconBaseHeight;
+    /**
+     * ActionTrashIconの最大拡大率
+     */
+    private float mActionTrashIconMaxScale;
+    /**
+     * 削除アイコンの枠内に入った時のアニメーション（拡大）
+     */
+    private ObjectAnimator mEnterScaleAnimator;
+    /**
+     * 削除アイコンの枠外に出た時のアニメーション（縮小）
+     */
+    private ObjectAnimator mExitScaleAnimator;
     /**
      * TrashViewListener
      */
@@ -466,6 +453,15 @@ class TrashView extends FrameLayout implements ViewTreeObserver.OnPreDrawListene
     }
 
     /**
+     * TrashViewの表示状態を取得します。
+     *
+     * @return trueの場合は表示
+     */
+    boolean isTrashEnabled() {
+        return mIsEnabled;
+    }
+
+    /**
      * TrashViewの有効・無効を設定します。
      *
      * @param enabled trueの場合は有効（表示）、falseの場合は無効（非表示）
@@ -481,15 +477,6 @@ class TrashView extends FrameLayout implements ViewTreeObserver.OnPreDrawListene
         if (!mIsEnabled) {
             dismiss();
         }
-    }
-
-    /**
-     * TrashViewの表示状態を取得します。
-     *
-     * @return trueの場合は表示
-     */
-    boolean isTrashEnabled() {
-        return mIsEnabled;
     }
 
     /**
@@ -623,67 +610,54 @@ class TrashView extends FrameLayout implements ViewTreeObserver.OnPreDrawListene
          * アルファの最小値
          */
         private static final float MIN_ALPHA = 0.0f;
-
-        /**
-         * アニメーションを開始した時間
-         */
-        private long mStartTime;
-
-        /**
-         * アニメーションを始めた時点のアルファ値
-         */
-        private float mStartAlpha;
-
-        /**
-         * アニメーションを始めた時点のTransitionY
-         */
-        private float mStartTransitionY;
-
-        /**
-         * 実行中のアニメーションのコード
-         */
-        private int mStartedCode;
-
-        /**
-         * 追従対象のX座標
-         */
-        private float mTargetPositionX;
-
-        /**
-         * 追従対象のY座標
-         */
-        private float mTargetPositionY;
-
-        /**
-         * 追従対象の幅
-         */
-        private float mTargetWidth;
-
-        /**
-         * 追従対象の高さ
-         */
-        private float mTargetHeight;
-
         /**
          * 削除アイコンの移動限界位置
          */
         private final Rect mTrashIconLimitPosition;
-
-        /**
-         * Y軸の追従の範囲
-         */
-        private float mMoveStickyYRange;
-
         /**
          * OvershootInterpolator
          */
         private final OvershootInterpolator mOvershootInterpolator;
-
-
         /**
          * TrashView
          */
         private final WeakReference<TrashView> mTrashView;
+        /**
+         * アニメーションを開始した時間
+         */
+        private long mStartTime;
+        /**
+         * アニメーションを始めた時点のアルファ値
+         */
+        private float mStartAlpha;
+        /**
+         * アニメーションを始めた時点のTransitionY
+         */
+        private float mStartTransitionY;
+        /**
+         * 実行中のアニメーションのコード
+         */
+        private int mStartedCode;
+        /**
+         * 追従対象のX座標
+         */
+        private float mTargetPositionX;
+        /**
+         * 追従対象のY座標
+         */
+        private float mTargetPositionY;
+        /**
+         * 追従対象の幅
+         */
+        private float mTargetWidth;
+        /**
+         * 追従対象の高さ
+         */
+        private float mTargetHeight;
+        /**
+         * Y軸の追従の範囲
+         */
+        private float mMoveStickyYRange;
 
         /**
          * コンストラクタ
@@ -693,6 +667,20 @@ class TrashView extends FrameLayout implements ViewTreeObserver.OnPreDrawListene
             mStartedCode = ANIMATION_NONE;
             mTrashIconLimitPosition = new Rect();
             mOvershootInterpolator = new OvershootInterpolator(OVERSHOOT_TENSION);
+        }
+
+        /**
+         * 送信するメッセージを生成します。
+         *
+         * @param animation ANIMATION_OPEN,ANIMATION_CLOSE,ANIMATION_FORCE_CLOSE
+         * @param type      TYPE_FIRST,TYPE_UPDATE
+         * @return Message
+         */
+        private static Message newMessage(int animation, int type) {
+            final Message message = Message.obtain();
+            message.what = animation;
+            message.arg1 = type;
+            return message;
         }
 
         /**
@@ -814,20 +802,6 @@ class TrashView extends FrameLayout implements ViewTreeObserver.OnPreDrawListene
          */
         void sendAnimationMessage(int animation) {
             sendMessage(newMessage(animation, TYPE_FIRST));
-        }
-
-        /**
-         * 送信するメッセージを生成します。
-         *
-         * @param animation ANIMATION_OPEN,ANIMATION_CLOSE,ANIMATION_FORCE_CLOSE
-         * @param type      TYPE_FIRST,TYPE_UPDATE
-         * @return Message
-         */
-        private static Message newMessage(int animation, int type) {
-            final Message message = Message.obtain();
-            message.what = animation;
-            message.arg1 = type;
-            return message;
         }
 
         /**

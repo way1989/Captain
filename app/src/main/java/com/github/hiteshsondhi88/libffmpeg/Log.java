@@ -16,37 +16,37 @@ class Log {
 
     static void d(Object obj) {
         if (DEBUG) {
-            android.util.Log.d(TAG, obj != null ? obj.toString() : null+"");
+            android.util.Log.d(TAG, obj != null ? obj.toString() : null + "");
         }
     }
 
     static void e(Object obj) {
         if (DEBUG) {
-            android.util.Log.e(TAG, obj != null ? obj.toString() : null+"");
+            android.util.Log.e(TAG, obj != null ? obj.toString() : null + "");
         }
     }
 
     static void w(Object obj) {
         if (DEBUG) {
-            android.util.Log.w(TAG, obj != null ? obj.toString() : null+"");
+            android.util.Log.w(TAG, obj != null ? obj.toString() : null + "");
         }
     }
 
     static void i(Object obj) {
         if (DEBUG) {
-            android.util.Log.i(TAG, obj != null ? obj.toString() : null+"");
+            android.util.Log.i(TAG, obj != null ? obj.toString() : null + "");
         }
     }
 
     static void v(Object obj) {
         if (DEBUG) {
-            android.util.Log.v(TAG, obj != null ? obj.toString() : null+"");
+            android.util.Log.v(TAG, obj != null ? obj.toString() : null + "");
         }
     }
 
     static void e(Object obj, Throwable throwable) {
         if (DEBUG) {
-            android.util.Log.e(TAG, obj != null ? obj.toString() : null+"", throwable);
+            android.util.Log.e(TAG, obj != null ? obj.toString() : null + "", throwable);
         }
     }
 

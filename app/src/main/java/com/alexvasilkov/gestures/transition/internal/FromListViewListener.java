@@ -23,8 +23,8 @@ public class FromListViewListener<ID> implements ViewsCoordinator.OnRequestViewL
     private boolean mScrollHalfVisibleItems;
 
     public FromListViewListener(@NonNull ListView listView,
-            @NonNull ViewsTracker<ID> tracker,
-            @NonNull ViewsTransitionAnimator<ID> animator) {
+                                @NonNull ViewsTracker<ID> tracker,
+                                @NonNull ViewsTransitionAnimator<ID> animator) {
         mListView = listView;
         mTracker = tracker;
         mAnimator = animator;

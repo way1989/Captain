@@ -44,6 +44,67 @@ public class StateController {
         mSettings = settings;
     }
 
+    public static float restrict(float value, float minValue, float maxValue) {
+        return Math.max(minValue, Math.min(value, maxValue));
+    }
+
+    /**
+     * Interpolates from start state to end state by given factor (from 0 to 1),
+     * storing result into out state.
+     */
+    public static void interpolate(State out, State start, State end, float factor) {
+        interpolate(out, start, start.getX(), start.getY(), end, end.getX(), end.getY(), factor);
+    }
+
+    /**
+     * Interpolates from start state to end state by given factor (from 0 to 1),
+     * storing result into out state. All operations (translation, zoom, rotation) will be
+     * performed within specified pivot points, assuming start and end pivot points represent
+     * same physical point on the image.
+     */
+    public static void interpolate(State out, State start, float startPivotX, float startPivotY,
+                                   State end, float endPivotX, float endPivotY, float factor) {
+        out.set(start);
+
+        if (!State.equals(start.getZoom(), end.getZoom())) {
+            float zoom = interpolate(start.getZoom(), end.getZoom(), factor);
+            out.zoomTo(zoom, startPivotX, startPivotY);
+        }
+
+        // Getting rotations
+        float startRotation = start.getRotation();
+        float endRotation = end.getRotation();
+
+        float rotation = Float.NaN;
+
+        // Choosing shortest path to interpolate
+        if (Math.abs(startRotation - endRotation) <= 180f) {
+            if (!State.equals(startRotation, endRotation)) {
+                rotation = interpolate(startRotation, endRotation, factor);
+            }
+        } else {
+            // Keeping rotation positive
+            float startRotationPositive = startRotation < 0f ? startRotation + 360f : startRotation;
+            float endRotationPositive = endRotation < 0f ? endRotation + 360f : endRotation;
+
+            if (!State.equals(startRotationPositive, endRotationPositive)) {
+                rotation = interpolate(startRotationPositive, endRotationPositive, factor);
+            }
+        }
+
+        if (!Float.isNaN(rotation)) {
+            out.rotateTo(rotation, startPivotX, startPivotY);
+        }
+
+        float dx = interpolate(0, endPivotX - startPivotX, factor);
+        float dy = interpolate(0, endPivotY - startPivotY, factor);
+        out.translateBy(dx, dy);
+    }
+
+    public static float interpolate(float start, float end, float factor) {
+        return start + (end - start) * factor;
+    }
+
     /**
      * Resets to initial state (min zoom, position according to gravity). Reset will only occur
      * when image and viewport sizes are known, otherwise reset will occur sometime in the future
@@ -126,7 +187,7 @@ public class StateController {
      */
     @Nullable
     State restrictStateBoundsCopy(State state, State prevState, float pivotX, float pivotY,
-            boolean allowOverscroll, boolean allowOverzoom, boolean restrictRotation) {
+                                  boolean allowOverscroll, boolean allowOverzoom, boolean restrictRotation) {
         TMP_STATE.set(state);
         boolean changed = restrictStateBounds(TMP_STATE, prevState, pivotX, pivotY,
                 allowOverscroll, allowOverzoom, restrictRotation);
@@ -141,7 +202,7 @@ public class StateController {
      * @return true if state was changed, false otherwise
      */
     boolean restrictStateBounds(State state, State prevState, float pivotX, float pivotY,
-            boolean allowOverscroll, boolean allowOverzoom, boolean restrictRotation) {
+                                boolean allowOverscroll, boolean allowOverzoom, boolean restrictRotation) {
 
         if (!mSettings.isRestrictBounds()) {
             return false;
@@ -244,7 +305,7 @@ public class StateController {
     }
 
     private float applyTranslationResilience(float value, float prevValue,
-            float boundsMin, float boundsMax, float overscroll) {
+                                             float boundsMin, float boundsMax, float overscroll) {
         if (overscroll == 0f) {
             return value;
         }
@@ -271,7 +332,6 @@ public class StateController {
         }
     }
 
-
     /**
      * Do note store returned object, since it will be reused next time this method is called.
      */
@@ -280,13 +340,12 @@ public class StateController {
         return TMP_MOV_BOUNDS;
     }
 
-
     /**
      * Returns area in which {@link State#getX()} & {@link State#getY()} values can change.
      * Note, that this is different than {@link Settings#setMovementArea(int, int)} which defines
      * part of the viewport in which image can move.
      *
-     * @param out Result will be stored in this rect.
+     * @param out   Result will be stored in this rect.
      * @param state State for which to calculate bounds.
      */
     @SuppressWarnings("unused") // Public API
@@ -363,67 +422,6 @@ public class StateController {
         }
 
         return isCorrectSize;
-    }
-
-    public static float restrict(float value, float minValue, float maxValue) {
-        return Math.max(minValue, Math.min(value, maxValue));
-    }
-
-    /**
-     * Interpolates from start state to end state by given factor (from 0 to 1),
-     * storing result into out state.
-     */
-    public static void interpolate(State out, State start, State end, float factor) {
-        interpolate(out, start, start.getX(), start.getY(), end, end.getX(), end.getY(), factor);
-    }
-
-    /**
-     * Interpolates from start state to end state by given factor (from 0 to 1),
-     * storing result into out state. All operations (translation, zoom, rotation) will be
-     * performed within specified pivot points, assuming start and end pivot points represent
-     * same physical point on the image.
-     */
-    public static void interpolate(State out, State start, float startPivotX, float startPivotY,
-            State end, float endPivotX, float endPivotY, float factor) {
-        out.set(start);
-
-        if (!State.equals(start.getZoom(), end.getZoom())) {
-            float zoom = interpolate(start.getZoom(), end.getZoom(), factor);
-            out.zoomTo(zoom, startPivotX, startPivotY);
-        }
-
-        // Getting rotations
-        float startRotation = start.getRotation();
-        float endRotation = end.getRotation();
-
-        float rotation = Float.NaN;
-
-        // Choosing shortest path to interpolate
-        if (Math.abs(startRotation - endRotation) <= 180f) {
-            if (!State.equals(startRotation, endRotation)) {
-                rotation = interpolate(startRotation, endRotation, factor);
-            }
-        } else {
-            // Keeping rotation positive
-            float startRotationPositive = startRotation < 0f ? startRotation + 360f : startRotation;
-            float endRotationPositive = endRotation < 0f ? endRotation + 360f : endRotation;
-
-            if (!State.equals(startRotationPositive, endRotationPositive)) {
-                rotation = interpolate(startRotationPositive, endRotationPositive, factor);
-            }
-        }
-
-        if (!Float.isNaN(rotation)) {
-            out.rotateTo(rotation, startPivotX, startPivotY);
-        }
-
-        float dx = interpolate(0, endPivotX - startPivotX, factor);
-        float dy = interpolate(0, endPivotY - startPivotY, factor);
-        out.translateBy(dx, dy);
-    }
-
-    public static float interpolate(float start, float end, float factor) {
-        return start + (end - start) * factor;
     }
 
 }

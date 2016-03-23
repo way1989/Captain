@@ -105,6 +105,11 @@ public class Settings {
         // Package private constructor
     }
 
+    private static float toPixels(Context context, float value) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value,
+                context.getResources().getDisplayMetrics());
+    }
+
     /**
      * Setting viewport size.
      * <p/>
@@ -139,29 +144,6 @@ public class Settings {
     }
 
     /**
-     * Setting max zoom level.
-     * <p/>
-     * Default value is {@link #MAX_ZOOM}.
-     */
-    public Settings setMaxZoom(float maxZoom) {
-        this.maxZoom = maxZoom;
-        return this;
-    }
-
-    /**
-     * Setting overzoom factor. User will be able to "over zoom" up to this factor. Cannot be < 1.
-     * <p/>
-     * Default value is {@link #OVERZOOM_FACTOR}.
-     */
-    public Settings setOverzoomFactor(float factor) {
-        if (factor < 1f) {
-            throw new IllegalArgumentException("Overzoom factor cannot be < 1");
-        }
-        overzoomFactor = factor;
-        return this;
-    }
-
-    /**
      * Setting overscroll distance in pixels. User will be able to "over scroll"
      * up to this distance. Cannot be < 0.
      * <p/>
@@ -182,77 +164,6 @@ public class Settings {
     public Settings setOverscrollDistance(Context context, float distanceXDp, float distanceYDp) {
         return setOverscrollDistance(toPixels(context, distanceXDp),
                 toPixels(context, distanceYDp));
-    }
-
-    /**
-     * If set to true small image will be scaled to fit entire viewport (or entire movement area
-     * if it was set) even if this will require zoom level above max zoom level.
-     * <p/>
-     * Default value is false.
-     */
-    public Settings setFillViewport(boolean isFitViewport) {
-        this.isFillViewport = isFitViewport;
-        return this;
-    }
-
-    /**
-     * Setting image gravity inside viewport area.
-     * <p/>
-     * Default value is {@link Gravity#CENTER}.
-     */
-    public Settings setGravity(int gravity) {
-        this.gravity = gravity;
-        return this;
-    }
-
-    /**
-     * Setting image fitting method within viewport area.
-     * <p/>
-     * Default value is {@link Fit#INSIDE}.
-     */
-    public Settings setFitMethod(@NonNull Fit fitMethod) {
-        this.fitMethod = fitMethod;
-        return this;
-    }
-
-    /**
-     * Sets whether panning is enabled or not.
-     * <p/>
-     * Default value is true.
-     */
-    public Settings setPanEnabled(boolean enabled) {
-        isPanEnabled = enabled;
-        return this;
-    }
-
-    /**
-     * Sets whether zooming is enabled or not.
-     * <p/>
-     * Default value is true.
-     */
-    public Settings setZoomEnabled(boolean enabled) {
-        isZoomEnabled = enabled;
-        return this;
-    }
-
-    /**
-     * Sets whether rotation gesture is enabled or not.
-     * <p/>
-     * Default value is false.
-     */
-    public Settings setRotationEnabled(boolean enabled) {
-        isRotationEnabled = enabled;
-        return this;
-    }
-
-    /**
-     * Sets whether zooming by double tap is enabled or not.
-     * <p/>
-     * Default value is true.
-     */
-    public Settings setDoubleTapEnabled(boolean enabled) {
-        isDoubleTapEnabled = enabled;
-        return this;
     }
 
     /**
@@ -280,32 +191,6 @@ public class Settings {
         gesturesDisableCount--;
         return this;
     }
-
-    /**
-     * Sets whether image transformations should be kept in bounds or not.
-     * <p/>
-     * Default value is true.
-     */
-    public Settings setRestrictBounds(boolean isRestrictBounds) {
-        this.isRestrictBounds = isRestrictBounds;
-        return this;
-    }
-
-    /**
-     * Sets whether image rotation should stick to 90 degrees intervals or can be free.
-     * Only applied when {@link #isRestrictBounds()} is true as well.
-     * <p/>
-     * Default value is false.
-     */
-    public Settings setRestrictRotation(boolean isRestrictRotation) {
-        this.isRestrictRotation = isRestrictRotation;
-        return this;
-    }
-
-
-    // --------------
-    //  Getters
-    // --------------
 
     public int getViewportW() {
         return viewportW;
@@ -335,9 +220,37 @@ public class Settings {
         return maxZoom;
     }
 
+    /**
+     * Setting max zoom level.
+     * <p/>
+     * Default value is {@link #MAX_ZOOM}.
+     */
+    public Settings setMaxZoom(float maxZoom) {
+        this.maxZoom = maxZoom;
+        return this;
+    }
+
     public float getOverzoomFactor() {
         return overzoomFactor;
     }
+
+    /**
+     * Setting overzoom factor. User will be able to "over zoom" up to this factor. Cannot be < 1.
+     * <p/>
+     * Default value is {@link #OVERZOOM_FACTOR}.
+     */
+    public Settings setOverzoomFactor(float factor) {
+        if (factor < 1f) {
+            throw new IllegalArgumentException("Overzoom factor cannot be < 1");
+        }
+        overzoomFactor = factor;
+        return this;
+    }
+
+
+    // --------------
+    //  Getters
+    // --------------
 
     public float getOverscrollDistanceX() {
         return overscrollDistanceX;
@@ -351,28 +264,99 @@ public class Settings {
         return isFillViewport;
     }
 
+    /**
+     * If set to true small image will be scaled to fit entire viewport (or entire movement area
+     * if it was set) even if this will require zoom level above max zoom level.
+     * <p/>
+     * Default value is false.
+     */
+    public Settings setFillViewport(boolean isFitViewport) {
+        this.isFillViewport = isFitViewport;
+        return this;
+    }
+
     public int getGravity() {
         return gravity;
+    }
+
+    /**
+     * Setting image gravity inside viewport area.
+     * <p/>
+     * Default value is {@link Gravity#CENTER}.
+     */
+    public Settings setGravity(int gravity) {
+        this.gravity = gravity;
+        return this;
     }
 
     public Fit getFitMethod() {
         return fitMethod;
     }
 
+    /**
+     * Setting image fitting method within viewport area.
+     * <p/>
+     * Default value is {@link Fit#INSIDE}.
+     */
+    public Settings setFitMethod(@NonNull Fit fitMethod) {
+        this.fitMethod = fitMethod;
+        return this;
+    }
+
     public boolean isPanEnabled() {
         return isGesturesEnabled() && isPanEnabled;
+    }
+
+    /**
+     * Sets whether panning is enabled or not.
+     * <p/>
+     * Default value is true.
+     */
+    public Settings setPanEnabled(boolean enabled) {
+        isPanEnabled = enabled;
+        return this;
     }
 
     public boolean isZoomEnabled() {
         return isGesturesEnabled() && isZoomEnabled;
     }
 
+    /**
+     * Sets whether zooming is enabled or not.
+     * <p/>
+     * Default value is true.
+     */
+    public Settings setZoomEnabled(boolean enabled) {
+        isZoomEnabled = enabled;
+        return this;
+    }
+
     public boolean isRotationEnabled() {
         return isGesturesEnabled() && isRotationEnabled;
     }
 
+    /**
+     * Sets whether rotation gesture is enabled or not.
+     * <p/>
+     * Default value is false.
+     */
+    public Settings setRotationEnabled(boolean enabled) {
+        isRotationEnabled = enabled;
+        return this;
+    }
+
     public boolean isDoubleTapEnabled() {
         return isGesturesEnabled() && isDoubleTapEnabled;
+    }
+
+    /**
+     * Sets whether zooming by double tap is enabled or not.
+     * <p/>
+     * Default value is true.
+     */
+    public Settings setDoubleTapEnabled(boolean enabled) {
+        isDoubleTapEnabled = enabled;
+        return this;
     }
 
     public boolean isGesturesEnabled() {
@@ -383,8 +367,29 @@ public class Settings {
         return isRestrictBounds;
     }
 
+    /**
+     * Sets whether image transformations should be kept in bounds or not.
+     * <p/>
+     * Default value is true.
+     */
+    public Settings setRestrictBounds(boolean isRestrictBounds) {
+        this.isRestrictBounds = isRestrictBounds;
+        return this;
+    }
+
     public boolean isRestrictRotation() {
         return isRestrictRotation;
+    }
+
+    /**
+     * Sets whether image rotation should stick to 90 degrees intervals or can be free.
+     * Only applied when {@link #isRestrictBounds()} is true as well.
+     * <p/>
+     * Default value is false.
+     */
+    public Settings setRestrictRotation(boolean isRestrictRotation) {
+        this.isRestrictRotation = isRestrictRotation;
+        return this;
     }
 
     /**
@@ -395,7 +400,6 @@ public class Settings {
                 (isPanEnabled || isZoomEnabled || isRotationEnabled || isDoubleTapEnabled);
     }
 
-
     public boolean hasImageSize() {
         return imageW != 0 && imageH != 0;
     }
@@ -403,7 +407,6 @@ public class Settings {
     public boolean hasViewportSize() {
         return viewportW != 0 && viewportH != 0;
     }
-
 
     public enum Fit {
         /**
@@ -425,11 +428,6 @@ public class Settings {
          * Fit image width or image height inside viewport area, so the entire viewport is filled
          */
         OUTSIDE
-    }
-
-    private static float toPixels(Context context, float value) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value,
-                context.getResources().getDisplayMetrics());
     }
 
 }

@@ -19,7 +19,7 @@ public class PermissionRequest {
     public PermissionRequest(ArrayList<String> permissions, PermissionCallback permissionCallback) {
         this.permissions = permissions;
         this.permissionCallback = permissionCallback;
-        if(random == null) {
+        if (random == null) {
             random = new Random();
         }
         this.requestCode = random.nextInt(255);
@@ -38,10 +38,10 @@ public class PermissionRequest {
     }
 
     public boolean equals(Object object) {
-        if(object == null) {
+        if (object == null) {
             return false;
         }
-        if(object instanceof PermissionRequest) {
+        if (object instanceof PermissionRequest) {
             return ((PermissionRequest) object).requestCode == this.requestCode;
         }
         return false;

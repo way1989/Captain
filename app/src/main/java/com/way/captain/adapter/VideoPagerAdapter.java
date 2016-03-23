@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Created by android on 16-2-2.
  */
-public class VideoPagerAdapter extends RecyclePagerAdapter<VideoPagerAdapter.ViewHolder> implements View.OnClickListener{
+public class VideoPagerAdapter extends RecyclePagerAdapter<VideoPagerAdapter.ViewHolder> implements View.OnClickListener {
     private final ViewPager mViewPager;
     private final ArrayList<VideoInfos> mVideoInfoses;
     private LayoutInflater mInflater;
@@ -49,9 +49,9 @@ public class VideoPagerAdapter extends RecyclePagerAdapter<VideoPagerAdapter.Vie
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup container) {
-        final View v = mInflater.inflate(R.layout.item_pager_video,container,false);
+        final View v = mInflater.inflate(R.layout.item_pager_video, container, false);
         ViewHolder holder = new ViewHolder(v);
-        ((GestureFrameLayout)holder.itemView).getController().enableScrollInViewPager(mViewPager);
+        ((GestureFrameLayout) holder.itemView).getController().enableScrollInViewPager(mViewPager);
         holder.playBtn.setOnClickListener(this);
         return holder;
     }
@@ -79,6 +79,7 @@ public class VideoPagerAdapter extends RecyclePagerAdapter<VideoPagerAdapter.Vie
     public interface OnPagerItemClickListener {
         void onPagerItemClick(VideoInfos info, int position, View itemView);
     }
+
     static class ViewHolder extends RecyclePagerAdapter.ViewHolder {
         public final View playBtn;
         public final ImageView imageView;

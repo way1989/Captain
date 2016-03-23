@@ -52,39 +52,28 @@ public class ViewPositionAnimator {
 
     private final List<PositionUpdateListener> mListeners = new ArrayList<>();
     private final List<PositionUpdateListener> mListenersToRemove = new ArrayList<>();
-    private boolean mIteratingListeners;
-
-    private long mDuration = FloatScroller.DEFAULT_DURATION;
-
     private final FloatScroller mStateScroller = new FloatScroller();
     private final AnimationEngine mAnimationEngine;
-
     private final GestureController mToController;
     private final ClipView mToClipView;
-
     private final State mFromState = new State(), mToState = new State();
-    private float mFromPivotX, mFromPivotY, mToPivotX, mToPivotY;
     private final RectF mFromClip = new RectF(), mToClip = new RectF();
     private final RectF mClipRect = new RectF();
+    private final ViewPositionHolder mFromPosHolder = new ViewPositionHolder();
+    private final ViewPositionHolder mToPosHolder = new ViewPositionHolder();
+    private boolean mIteratingListeners;
+    private long mDuration = FloatScroller.DEFAULT_DURATION;
+    private float mFromPivotX, mFromPivotY, mToPivotX, mToPivotY;
     private ViewPosition mFromPos, mToPos;
-
     private View mFromView;
-
     private boolean mOrigRestrictBoundsFlag;
-
     private boolean mIsActivated = false;
-
     private float mPositionState = 0f;
     private boolean mIsLeaving = true; // Leaving by default
     private boolean mIsAnimating = false;
     private boolean mApplyingPositionState;
     private boolean mApplyingPositionStateScheduled;
-
     private boolean mIsFromUpdated, mIsToUpdated; // Marks that update for 'From' or 'To' is needed
-
-    private final ViewPositionHolder mFromPosHolder = new ViewPositionHolder();
-    private final ViewPositionHolder mToPosHolder = new ViewPositionHolder();
-
     private final ViewPositionHolder.OnViewPositionChangeListener mFromPositionListener =
             new ViewPositionHolder.OnViewPositionChangeListener() {
                 @Override
@@ -144,6 +133,17 @@ public class ViewPositionAnimator {
                 applyPositionState();
             }
         });
+    }
+
+    /**
+     * Interpolates from start rect to the end rect by given factor (from 0 to 1),
+     * storing result into out rect.
+     */
+    private static void interpolate(RectF out, RectF start, RectF end, float factor) {
+        out.left = StateController.interpolate(start.left, end.left, factor);
+        out.top = StateController.interpolate(start.top, end.top, factor);
+        out.right = StateController.interpolate(start.right, end.right, factor);
+        out.bottom = StateController.interpolate(start.bottom, end.bottom, factor);
     }
 
     /**
@@ -343,7 +343,7 @@ public class ViewPositionAnimator {
      * or {@link #enter(ViewPosition, boolean)} again in order to continue using animator.
      */
     public void setState(@FloatRange(from = 0f, to = 1f) float state,
-            boolean isLeaving, boolean isAnimating) {
+                         boolean isLeaving, boolean isAnimating) {
         stopAnimation();
         mPositionState = state;
         mIsLeaving = isLeaving;
@@ -580,17 +580,16 @@ public class ViewPositionAnimator {
         }
     }
 
-    /**
-     * Interpolates from start rect to the end rect by given factor (from 0 to 1),
-     * storing result into out rect.
-     */
-    private static void interpolate(RectF out, RectF start, RectF end, float factor) {
-        out.left = StateController.interpolate(start.left, end.left, factor);
-        out.top = StateController.interpolate(start.top, end.top, factor);
-        out.right = StateController.interpolate(start.right, end.right, factor);
-        out.bottom = StateController.interpolate(start.bottom, end.bottom, factor);
-    }
 
+    public interface PositionUpdateListener {
+        /**
+         * @param state     Position state within range {@code [0, 1]}, where {@code 0} is for
+         *                  initial (from) position and {@code 1} is for final (to) position.
+         * @param isLeaving {@code false} if transitioning from initial to final position
+         *                  (entering) or {@code true} for reverse transition.
+         */
+        void onPositionUpdate(float state, boolean isLeaving);
+    }
 
     private class LocalAnimationEngine extends AnimationEngine {
         public LocalAnimationEngine(@NonNull View view) {
@@ -612,17 +611,6 @@ public class ViewPositionAnimator {
             }
             return false;
         }
-    }
-
-
-    public interface PositionUpdateListener {
-        /**
-         * @param state Position state within range {@code [0, 1]}, where {@code 0} is for
-         * initial (from) position and {@code 1} is for final (to) position.
-         * @param isLeaving {@code false} if transitioning from initial to final position
-         * (entering) or {@code true} for reverse transition.
-         */
-        void onPositionUpdate(float state, boolean isLeaving);
     }
 
 }

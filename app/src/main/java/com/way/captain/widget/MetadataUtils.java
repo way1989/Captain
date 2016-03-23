@@ -3,7 +3,6 @@ package com.way.captain.widget;
 import android.media.MediaPlayer;
 import android.text.TextUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**

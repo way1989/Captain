@@ -46,7 +46,7 @@ public class GifDataProvider {
             }
 
             mData.add(insertedPosition, mLastRemovedData);
-            if(mDeleteData.contains(mLastRemovedData))
+            if (mDeleteData.contains(mLastRemovedData))
                 mDeleteData.remove(mLastRemovedData);
 
             mLastRemovedData = null;
@@ -58,9 +58,9 @@ public class GifDataProvider {
         }
     }
 
-    public boolean deleteLastRemoval(){
+    public boolean deleteLastRemoval() {
         if (mLastRemovedData != null && !mDeleteData.isEmpty()) {
-            for(GifInfos info : mDeleteData) {
+            for (GifInfos info : mDeleteData) {
                 File file = new File(info.getPath());
                 if (file.exists())
                     file.delete();

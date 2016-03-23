@@ -5,5 +5,6 @@ package com.way.captain.permissions;
  */
 public interface PermissionCallback {
     public void permissionGranted();
+
     public void permissionRefused();
 }

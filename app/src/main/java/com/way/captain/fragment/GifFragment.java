@@ -80,7 +80,7 @@ public class GifFragment extends BaseFragment implements LoaderManager.LoaderCal
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mLoadingEmptyContainer = (LoadingEmptyContainer)view.findViewById(R.id.loading_empty_container);
+        mLoadingEmptyContainer = (LoadingEmptyContainer) view.findViewById(R.id.loading_empty_container);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mViewPager = (ViewPager) view.findViewById(R.id.transition_pager);
         mBackground = view.findViewById(R.id.transition_full_background);
@@ -164,7 +164,7 @@ public class GifFragment extends BaseFragment implements LoaderManager.LoaderCal
             dataProvider.setData(data.gifInfosList);
             mGifAdapter.setDatas(dataProvider);
             mPagerAdapter.setDatas(data.gifInfosList);
-        }else{
+        } else {
             mLoadingEmptyContainer.showNoResults();
         }
     }
@@ -172,8 +172,8 @@ public class GifFragment extends BaseFragment implements LoaderManager.LoaderCal
     @Override
     public void onLoaderReset(Loader<GifListLoader.Result> loader) {
         mSwipeRefreshLayout.setRefreshing(false);
-        if(mGifAdapter != null)
-        mGifAdapter.clearData();
+        if (mGifAdapter != null)
+            mGifAdapter.clearData();
         mPagerAdapter.clearData();
     }
 
@@ -222,6 +222,7 @@ public class GifFragment extends BaseFragment implements LoaderManager.LoaderCal
             mLoadingEmptyContainer.setVisibility(View.INVISIBLE);
         }
     }
+
     @Override
     public void onPositionUpdate(float state, boolean isLeaving) {
         mBackground.setVisibility(state == 0f ? View.INVISIBLE : View.VISIBLE);
@@ -241,6 +242,7 @@ public class GifFragment extends BaseFragment implements LoaderManager.LoaderCal
     public boolean onFloatButtonClick() {
         return false;
     }
+
     @Override
     public void onDestroyView() {
         dataProvider.deleteLastRemoval();

@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 RECRUIT LIFESTYLE CO., LTD.
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *            http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,22 +65,18 @@ public class FloatingViewManager implements ScreenChangedListener, View.OnTouchL
      * 移動しない
      */
     public static final int MOVE_DIRECTION_NONE = 3;
-
-    /**
-     * FloatingViewと削除ボタンが重なった時のバイブレーション時間(ミリ秒)
-     */
-    private static final long VIBRATE_INTERSECTS_MILLIS = 15;
-
     /**
      * Viewの形が円形の場合
      */
     public static final float SHAPE_CIRCLE = 1.0f;
-
     /**
      * Viewの形が四角形の場合
      */
     public static final float SHAPE_RECTANGLE = 1.4142f;
-
+    /**
+     * FloatingViewと削除ボタンが重なった時のバイブレーション時間(ミリ秒)
+     */
+    private static final long VIBRATE_INTERSECTS_MILLIS = 15;
     /**
      * Context
      */
@@ -90,58 +86,48 @@ public class FloatingViewManager implements ScreenChangedListener, View.OnTouchL
      * WindowManager
      */
     private final WindowManager mWindowManager;
-
-    /**
-     * 操作状態のFloatingView
-     */
-    private FloatingView mTargetFloatingView;
-
     /**
      * フルスクリーンを監視するViewです。
      */
     private final FullscreenObserverView mFullscreenObserverView;
-
     /**
      * FloatingViewを削除するViewです。
      */
     private final TrashView mTrashView;
-
     /**
      * FloatingViewListener
      */
     private final FloatingViewListener mFloatingViewListener;
-
     /**
      * FloatingViewの当たり判定用矩形
      */
     private final Rect mFloatingViewRect;
-
     /**
      * TrashViewの当たり判定用矩形
      */
     private final Rect mTrashViewRect;
-
     /**
      * Vibrator
      */
     private final Vibrator mVibrator;
-
-    /**
-     * タッチの移動を許可するフラグ
-     * 画面回転時にタッチ処理を受け付けないようにするためのフラグです
-     */
-    private boolean mIsMoveAccept;
-
-    /**
-     * 現在の表示モード
-     */
-    private int mDisplayMode;
-
     /**
      * Windowに貼り付けられたFloatingViewのリスト
      * TODO:第2弾のFloatingViewの複数表示で意味を発揮する予定
      */
     private final ArrayList<FloatingView> mFloatingViewList;
+    /**
+     * 操作状態のFloatingView
+     */
+    private FloatingView mTargetFloatingView;
+    /**
+     * タッチの移動を許可するフラグ
+     * 画面回転時にタッチ処理を受け付けないようにするためのフラグです
+     */
+    private boolean mIsMoveAccept;
+    /**
+     * 現在の表示モード
+     */
+    private int mDisplayMode;
 
     /**
      * コンストラクタ
@@ -370,21 +356,21 @@ public class FloatingViewManager implements ScreenChangedListener, View.OnTouchL
     }
 
     /**
-     * TrashViewの表示・非表示を設定します。
-     *
-     * @param enabled trueの場合は表示
-     */
-    public void setTrashViewEnabled(boolean enabled) {
-        mTrashView.setTrashEnabled(enabled);
-    }
-
-    /**
      * TrashViewの表示非表示状態を取得します。
      *
      * @return trueの場合は表示状態（重なり判定が有効の状態）
      */
     public boolean isTrashViewEnabled() {
         return mTrashView.isTrashEnabled();
+    }
+
+    /**
+     * TrashViewの表示・非表示を設定します。
+     *
+     * @param enabled trueの場合は表示
+     */
+    public void setTrashViewEnabled(boolean enabled) {
+        mTrashView.setTrashEnabled(enabled);
     }
 
     /**

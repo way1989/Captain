@@ -93,7 +93,7 @@ class FFmpegExecuteAsyncTask extends AsyncTask<Void, String, CommandResult> {
                         return;
                     }
 
-                    output += line+"\n";
+                    output += line + "\n";
                     publishProgress(line);
                 }
             } catch (IOException e) {

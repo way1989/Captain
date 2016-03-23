@@ -71,6 +71,7 @@ final class RecordingSession {
     private String outputFile;
     private boolean running;
     private long recordingStartNanos;
+
     RecordingSession(Context context, Listener listener, int resultCode, Intent data, Boolean showCountDown,
                      Integer videoSizePercentage) {
         this.context = context;
@@ -349,7 +350,7 @@ final class RecordingSession {
             Log.w("way", "Destroyed while running!");
             try {
                 stopRecording();
-            }catch (Exception e){
+            } catch (Exception e) {
             }
         }
     }

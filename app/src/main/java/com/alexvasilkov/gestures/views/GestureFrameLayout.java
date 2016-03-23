@@ -32,15 +32,11 @@ import com.alexvasilkov.gestures.views.interfaces.GestureView;
 public class GestureFrameLayout extends FrameLayout implements GestureView, AnimatorView {
 
     private final GestureControllerForPager mController;
-
-    private ViewPositionAnimator mPositionAnimator;
-
     private final Matrix mMatrix = new Matrix();
     private final Matrix mMatrixInverse = new Matrix();
-
     private final RectF mTmpFloatRect = new RectF();
     private final float[] mTmpPointArray = new float[2];
-
+    private ViewPositionAnimator mPositionAnimator;
     private MotionEvent mCurrentMotionEvent;
 
     public GestureFrameLayout(Context context) {
@@ -66,6 +62,14 @@ public class GestureFrameLayout extends FrameLayout implements GestureView, Anim
                 applyState(newState);
             }
         });
+    }
+
+    protected static int getChildMeasureSpecFixed(int spec, int extra, int childDimension) {
+        if (childDimension == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            return MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(spec), MeasureSpec.UNSPECIFIED);
+        } else {
+            return getChildMeasureSpec(spec, extra, childDimension);
+        }
     }
 
     /**
@@ -135,7 +139,7 @@ public class GestureFrameLayout extends FrameLayout implements GestureView, Anim
 
     @Override
     protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed,
-            int parentHeightMeasureSpec, int heightUsed) {
+                                           int parentHeightMeasureSpec, int heightUsed) {
         final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
 
         final int extraW = getPaddingLeft() + getPaddingRight() +
@@ -169,7 +173,6 @@ public class GestureFrameLayout extends FrameLayout implements GestureView, Anim
         super.addView(child, index, params);
     }
 
-
     private MotionEvent applyMatrix(MotionEvent event, Matrix matrix) {
         MotionEvent copy = MotionEvent.obtain(event);
         mTmpPointArray[0] = event.getX();
@@ -184,15 +187,6 @@ public class GestureFrameLayout extends FrameLayout implements GestureView, Anim
         matrix.mapRect(mTmpFloatRect);
         rect.set(Math.round(mTmpFloatRect.left), Math.round(mTmpFloatRect.top),
                 Math.round(mTmpFloatRect.right), Math.round(mTmpFloatRect.bottom));
-    }
-
-
-    protected static int getChildMeasureSpecFixed(int spec, int extra, int childDimension) {
-        if (childDimension == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            return MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(spec), MeasureSpec.UNSPECIFIED);
-        } else {
-            return getChildMeasureSpec(spec, extra, childDimension);
-        }
     }
 
 }

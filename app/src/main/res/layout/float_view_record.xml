@@ -13,8 +13,7 @@
         android:id="@+id/record_overlay_stop"
         android:layout_width="46.0dip"
         android:layout_height="46.0dip"
-        android:background="@drawable/bg_float_record_pause_ripple"
-        />
+        android:background="@drawable/bg_float_record_pause_ripple" />
 
     <LinearLayout
         android:layout_width="wrap_content"

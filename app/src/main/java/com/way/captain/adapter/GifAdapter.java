@@ -32,6 +32,10 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.ViewHolder> impl
     //private ArrayList<GifInfos> mGifsInfos;
     private GifDataProvider mDataProvider = new GifDataProvider();
     private OnItemClickListener mListener;
+    /**
+     * Used to listen to the pop up menu callbacks
+     */
+    private IPopupMenuCallback.IListener mPopupMenuListener;
 
     public GifAdapter(Context context, OnItemClickListener listener) {
         mContext = context;
@@ -60,6 +64,7 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.ViewHolder> impl
         mDataProvider.clear();
         notifyDataSetChanged();
     }
+
     public GifInfos getItem(int pos) {
         return mDataProvider.getItem(pos);
     }
@@ -107,7 +112,7 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.ViewHolder> impl
     @Override
     public void onClick(View v) {
         int pos = (Integer) v.getTag(R.id.tag_item);
-        mListener.onItemClick(mDataProvider.getItem(pos), pos,  v);
+        mListener.onItemClick(mDataProvider.getItem(pos), pos, v);
     }
 
     @Override
@@ -149,6 +154,11 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.ViewHolder> impl
         holder.itemView.setBackgroundResource(bgRes);
     }
 
+    @Override
+    public void setPopupMenuClickedListener(IPopupMenuCallback.IListener listener) {
+        mPopupMenuListener = listener;
+    }
+
     public interface OnItemClickListener {
         void onItemClick(GifInfos gifInfos, int position, View image);
 
@@ -184,6 +194,7 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.ViewHolder> impl
             ViewCompat.setAlpha(mContainer, alpha);
         }
     }
+
     private static class SwipeLeftResultAction extends SwipeResultActionMoveToSwipedDirection {
         private final int mPosition;
         private GifAdapter mAdapter;
@@ -217,13 +228,5 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.ViewHolder> impl
             // clear the references
             mAdapter = null;
         }
-    }
-    /**
-     * Used to listen to the pop up menu callbacks
-     */
-    private IPopupMenuCallback.IListener mPopupMenuListener;
-    @Override
-    public void setPopupMenuClickedListener(IPopupMenuCallback.IListener listener) {
-        mPopupMenuListener = listener;
     }
 }

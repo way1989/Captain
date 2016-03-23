@@ -16,6 +16,20 @@ public class State {
     private float zoom = 1f;
     private float rotation;
 
+    /**
+     * Compares two float values, allowing small difference (see {@link #EPSILON})
+     */
+    public static boolean equals(float v1, float v2) {
+        return compare(v1, v2) == 0;
+    }
+
+    /**
+     * Compares two float values, allowing small difference (see {@link #EPSILON})
+     */
+    public static int compare(float v1, float v2) {
+        return v1 > v2 + EPSILON ? 1 : v1 < v2 - EPSILON ? -1 : 0;
+    }
+
     public float getX() {
         return x;
     }
@@ -182,20 +196,6 @@ public class State {
     @Override
     public String toString() {
         return "{x=" + x + ",y=" + y + ",zoom=" + zoom + ",rotation=" + rotation + "}";
-    }
-
-    /**
-     * Compares two float values, allowing small difference (see {@link #EPSILON})
-     */
-    public static boolean equals(float v1, float v2) {
-        return compare(v1, v2) == 0;
-    }
-
-    /**
-     * Compares two float values, allowing small difference (see {@link #EPSILON})
-     */
-    public static int compare(float v1, float v2) {
-        return v1 > v2 + EPSILON ? 1 : v1 < v2 - EPSILON ? -1 : 0;
     }
 
 }

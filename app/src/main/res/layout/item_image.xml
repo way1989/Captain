@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="8dp"
-    card_view:cardBackgroundColor="@android:color/white"
     android:foreground="?selectableItemBackground"
+    card_view:cardBackgroundColor="@android:color/white"
     card_view:cardCornerRadius="2dp"
     card_view:cardElevation="2dp">
 
@@ -60,6 +60,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="32dp"
                 android:textAppearance="?android:textAppearanceSmall" />
+
             <com.way.captain.widget.PopupMenuButton
                 android:id="@+id/popup_menu_button"
                 android:layout_width="wrap_content"

@@ -7,10 +7,7 @@ import com.way.captain.App;
 import com.way.captain.utils.AppUtils;
 
 import java.io.File;
-import java.text.Collator;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +26,7 @@ public class GifInfos {
 
         @Override
         public int compare(File lhs, File rhs) {
-           // return sCollator.compare(lhs.lastModified(), rhs.lastModified());
+            // return sCollator.compare(lhs.lastModified(), rhs.lastModified());
             return new Long(rhs.lastModified()).compareTo(new Long(lhs.lastModified()));
         }
     };

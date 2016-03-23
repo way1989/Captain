@@ -46,7 +46,7 @@ public class VideoDataProvider {
             }
 
             mData.add(insertedPosition, mLastRemovedData);
-            if(mDeleteData.contains(mLastRemovedData))
+            if (mDeleteData.contains(mLastRemovedData))
                 mDeleteData.remove(mLastRemovedData);
 
             mLastRemovedData = null;
@@ -58,9 +58,9 @@ public class VideoDataProvider {
         }
     }
 
-    public boolean deleteLastRemoval(){
+    public boolean deleteLastRemoval() {
         if (mLastRemovedData != null && !mDeleteData.isEmpty()) {
-            for(VideoInfos info : mDeleteData) {
+            for (VideoInfos info : mDeleteData) {
                 File file = new File(info.getPath());
                 if (file.exists())
                     file.delete();

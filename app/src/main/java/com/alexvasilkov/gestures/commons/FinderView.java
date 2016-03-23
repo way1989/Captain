@@ -37,18 +37,13 @@ public class FinderView extends View {
     public static final int DEFAULT_BORDER_WIDTH = 2;
 
     private final RectF mRect = new RectF();
-    private float mRounding = 0f;
-
     private final RectF mStrokeRect = new RectF();
-
     private final RectF mStartRect = new RectF(), mEndRect = new RectF();
-    private float mStartRounding, mEndRounding;
-
     private final Paint mPaintStroke = new Paint(), mPaintClear = new Paint();
-
     private final FloatScroller mStateScroller = new FloatScroller();
     private final AnimationEngine mAnimationEngine = new LocalAnimationEngine();
-
+    private float mRounding = 0f;
+    private float mStartRounding, mEndRounding;
     private int mBackColor;
     private Settings mSettings;
 
@@ -69,6 +64,13 @@ public class FinderView extends View {
         setBackColor(DEFAULT_BACK_COLOR);
         setBorderColor(DEFAULT_BORDER_COLOR);
         setBorderWidth(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_BORDER_WIDTH);
+    }
+
+    private static void interpolate(RectF start, RectF end, RectF out, float factor) {
+        out.left = StateController.interpolate(start.left, end.left, factor);
+        out.top = StateController.interpolate(start.top, end.top, factor);
+        out.right = StateController.interpolate(start.right, end.right, factor);
+        out.bottom = StateController.interpolate(start.bottom, end.bottom, factor);
     }
 
     /**
@@ -168,14 +170,6 @@ public class FinderView extends View {
 
         canvas.drawRoundRect(mStrokeRect, rx, ry, mPaintStroke);
     }
-
-    private static void interpolate(RectF start, RectF end, RectF out, float factor) {
-        out.left = StateController.interpolate(start.left, end.left, factor);
-        out.top = StateController.interpolate(start.top, end.top, factor);
-        out.right = StateController.interpolate(start.right, end.right, factor);
-        out.bottom = StateController.interpolate(start.bottom, end.bottom, factor);
-    }
-
 
     private class LocalAnimationEngine extends AnimationEngine {
         public LocalAnimationEngine() {

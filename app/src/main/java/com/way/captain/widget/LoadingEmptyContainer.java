@@ -62,6 +62,6 @@ public class LoadingEmptyContainer extends FrameLayout {
     }
 
     public NoResultsContainer getNoResultsContainer() {
-        return (NoResultsContainer)findViewById(R.id.no_results_container);
+        return (NoResultsContainer) findViewById(R.id.no_results_container);
     }
 }

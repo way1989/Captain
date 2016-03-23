@@ -73,6 +73,56 @@ public class GestureControllerForPager extends GestureController {
         mTouchSlop = ViewConfiguration.get(view.getContext()).getScaledTouchSlop();
     }
 
+    private static MotionEvent obtainOnePointerEvent(@NonNull MotionEvent e) {
+        return MotionEvent.obtain(e.getDownTime(), e.getEventTime(), e.getAction(),
+                e.getX(), e.getY(), e.getMetaState());
+    }
+
+    private static void settleViewPagerIfFinished(ViewPager pager, @NonNull MotionEvent e) {
+        if (e.getActionMasked() == MotionEvent.ACTION_UP ||
+                e.getActionMasked() == MotionEvent.ACTION_CANCEL) {
+            // Hack: if ViewPager is not settled we should force it to do so, fake drag will help
+            try {
+                // Pager may throw an annoying exception if there are no internal page state items
+                pager.beginFakeDrag();
+                if (pager.isFakeDragging()) {
+                    pager.endFakeDrag();
+                }
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
+    private static void transformToPagerEvent(MotionEvent event, View view, ViewPager pager) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            TMP_MATRIX.reset();
+            transformMatrixToPager(TMP_MATRIX, view, pager);
+            event.transform(TMP_MATRIX);
+        } else {
+            view.getLocationOnScreen(TMP_LOCATION);
+            event.offsetLocation(TMP_LOCATION[0], TMP_LOCATION[1]);
+            pager.getLocationOnScreen(TMP_LOCATION);
+            event.offsetLocation(-TMP_LOCATION[0], -TMP_LOCATION[1]);
+        }
+    }
+
+    /**
+     * Inspired by hidden method View#transformMatrixToGlobal().
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private static void transformMatrixToPager(Matrix matrix, View view, ViewPager pager) {
+        View parent = (View) view.getParent();
+        if (parent != null && parent != pager) {
+            transformMatrixToPager(matrix, parent, pager);
+        }
+        if (parent != null) {
+            matrix.preTranslate(-parent.getScrollX(), -parent.getScrollY());
+        }
+
+        matrix.preTranslate(view.getLeft(), view.getTop());
+        matrix.preConcat(view.getMatrix());
+    }
+
     /**
      * Enables scroll inside {@link ViewPager}
      * (by enabling cross movement between ViewPager and it's child view)
@@ -152,7 +202,7 @@ public class GestureControllerForPager extends GestureController {
 
     @Override
     protected boolean onScroll(@NonNull MotionEvent e1, @NonNull MotionEvent e2,
-            float dX, float dY) {
+                               float dX, float dY) {
 
         if (mViewPager == null) {
             return super.onScroll(e1, e2, dX, dY);
@@ -174,7 +224,7 @@ public class GestureControllerForPager extends GestureController {
 
     @Override
     protected boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2,
-            float vX, float vY) {
+                              float vX, float vY) {
 
         return !hasViewPagerX() && super.onFling(e1, e2, vX, vY);
     }
@@ -363,56 +413,6 @@ public class GestureControllerForPager extends GestureController {
         }
 
         fixedEvent.recycle();
-    }
-
-    private static MotionEvent obtainOnePointerEvent(@NonNull MotionEvent e) {
-        return MotionEvent.obtain(e.getDownTime(), e.getEventTime(), e.getAction(),
-                e.getX(), e.getY(), e.getMetaState());
-    }
-
-    private static void settleViewPagerIfFinished(ViewPager pager, @NonNull MotionEvent e) {
-        if (e.getActionMasked() == MotionEvent.ACTION_UP ||
-                e.getActionMasked() == MotionEvent.ACTION_CANCEL) {
-            // Hack: if ViewPager is not settled we should force it to do so, fake drag will help
-            try {
-                // Pager may throw an annoying exception if there are no internal page state items
-                pager.beginFakeDrag();
-                if (pager.isFakeDragging()) {
-                    pager.endFakeDrag();
-                }
-            } catch (Exception ignored) {
-            }
-        }
-    }
-
-    private static void transformToPagerEvent(MotionEvent event, View view, ViewPager pager) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            TMP_MATRIX.reset();
-            transformMatrixToPager(TMP_MATRIX, view, pager);
-            event.transform(TMP_MATRIX);
-        } else {
-            view.getLocationOnScreen(TMP_LOCATION);
-            event.offsetLocation(TMP_LOCATION[0], TMP_LOCATION[1]);
-            pager.getLocationOnScreen(TMP_LOCATION);
-            event.offsetLocation(-TMP_LOCATION[0], -TMP_LOCATION[1]);
-        }
-    }
-
-    /**
-     * Inspired by hidden method View#transformMatrixToGlobal().
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private static void transformMatrixToPager(Matrix matrix, View view, ViewPager pager) {
-        View parent = (View) view.getParent();
-        if (parent != null && parent != pager) {
-            transformMatrixToPager(matrix, parent, pager);
-        }
-        if (parent != null) {
-            matrix.preTranslate(-parent.getScrollX(), -parent.getScrollY());
-        }
-
-        matrix.preTranslate(view.getLeft(), view.getTop());
-        matrix.preConcat(view.getMatrix());
     }
 
 }

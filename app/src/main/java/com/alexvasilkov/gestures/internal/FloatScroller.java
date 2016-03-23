@@ -34,6 +34,10 @@ public class FloatScroller {
         mInterpolator = new AccelerateDecelerateInterpolator();
     }
 
+    private static float interpolate(float x1, float x2, float f) {
+        return x1 + (x2 - x1) * f;
+    }
+
     @SuppressWarnings("unused") // To keep similar to standard Scroller
     public long getDuration() {
         return mDuration;
@@ -135,10 +139,6 @@ public class FloatScroller {
      */
     public float getCurr() {
         return mCurrValue;
-    }
-
-    private static float interpolate(float x1, float x2, float f) {
-        return x1 + (x2 - x1) * f;
     }
 
 }

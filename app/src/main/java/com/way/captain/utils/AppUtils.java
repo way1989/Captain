@@ -6,9 +6,9 @@ import android.os.Environment;
 import java.io.File;
 
 public class AppUtils {
-    public static final int MENU_DELETE           = 0;
-    public static final int MENU_SHOW             = 1;
-    public static final int MENU_DELETE_ALL       = 2;
+    public static final int MENU_DELETE = 0;
+    public static final int MENU_SHOW = 1;
+    public static final int MENU_DELETE_ALL = 2;
 
     public static final int FILE_TYPE_GIF = 0;
     public static final int FILE_TYPE_VIDEO = 1;
@@ -28,7 +28,7 @@ public class AppUtils {
 
     // crash path
     public static final String APP_CRASH_FOLDER_NAME = "crash_log";
-    public static final String APP_CRASH_PATH = APP_ABSOLUTE_ROOT_PATH  + "/" + APP_CRASH_FOLDER_NAME;
+    public static final String APP_CRASH_PATH = APP_ABSOLUTE_ROOT_PATH + "/" + APP_CRASH_FOLDER_NAME;
 
     // temp file folder
     public static final String APP_GIF_TEMP_FILES_FOLDER_NAME = "temp_files";

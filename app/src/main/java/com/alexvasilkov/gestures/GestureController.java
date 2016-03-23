@@ -57,15 +57,21 @@ public class GestureController implements View.OnTouchListener {
     private final int mTouchSlop, mMinimumVelocity, mMaximumVelocity;
 
     private final List<OnStateChangeListener> mStateListeners = new ArrayList<>();
-    private OnGestureListener mGestureListener;
-
     private final AnimationEngine mAnimationEngine;
-
     // Various gesture detectors
     private final GestureDetector mGestureDetector;
     private final ScaleGestureDetector mScaleDetector;
     private final RotationGestureDetector mRotateDetector;
-
+    private final OverScroller mFlingScroller;
+    private final FloatScroller mStateScroller;
+    private final MovementBounds mFlingBounds = new MovementBounds();
+    private final State mPrevState = new State();
+    private final State mStateStart = new State();
+    private final State mStateEnd = new State();
+    private final Settings mSettings;
+    private final State mState = new State();
+    private final StateController mStateController;
+    private OnGestureListener mGestureListener;
     private boolean mIsScrollDetected;
     private boolean mIsScaleDetected;
     private float mPivotX = Float.NaN, mPivotY = Float.NaN;
@@ -73,18 +79,6 @@ public class GestureController implements View.OnTouchListener {
     private boolean mIsRestrictZoomRequested;
     private boolean mIsRestrictRotationRequested;
     private boolean mIsAnimatingInBounds;
-
-    private final OverScroller mFlingScroller;
-    private final FloatScroller mStateScroller;
-
-    private final MovementBounds mFlingBounds = new MovementBounds();
-    private final State mPrevState = new State();
-    private final State mStateStart = new State();
-    private final State mStateEnd = new State();
-
-    private final Settings mSettings;
-    private final State mState = new State();
-    private final StateController mStateController;
 
     public GestureController(@NonNull View view) {
         Context context = view.getContext();
@@ -406,7 +400,7 @@ public class GestureController implements View.OnTouchListener {
     }
 
     protected boolean onScroll(@NonNull MotionEvent e1, @NonNull MotionEvent e2,
-            float dX, float dY) {
+                               float dX, float dY) {
 
         if (!mSettings.isPanEnabled() || isAnimatingState()) {
             return false;
@@ -434,7 +428,7 @@ public class GestureController implements View.OnTouchListener {
     }
 
     protected boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2,
-            float vX, float vY) {
+                              float vX, float vY) {
 
         if (!mSettings.isPanEnabled() || isAnimatingState()) {
             return false;
@@ -557,61 +551,6 @@ public class GestureController implements View.OnTouchListener {
     }
 
     /**
-     * Animation engine implementation to animate state changes
-     */
-    private class LocalAnimationEngine extends AnimationEngine {
-        public LocalAnimationEngine(@NonNull View view) {
-            super(view);
-        }
-
-        @Override
-        public boolean onStep() {
-            boolean shouldProceed = false;
-
-            if (isAnimatingFling()) {
-                int prevX = mFlingScroller.getCurrX(), prevY = mFlingScroller.getCurrY();
-
-                if (mFlingScroller.computeScrollOffset()) {
-                    int dX = mFlingScroller.getCurrX() - prevX;
-                    int dY = mFlingScroller.getCurrY() - prevY;
-
-                    if (!onFlingScroll(dX, dY)) {
-                        stopFlingAnimation();
-                    }
-
-                    shouldProceed = true;
-                }
-
-                if (!isAnimatingFling()) {
-                    onFlingAnimationFinished(false);
-                }
-            }
-
-            if (isAnimatingState()) {
-                mStateScroller.computeScroll();
-                float factor = mStateScroller.getCurr();
-                StateController.interpolate(mState, mStateStart, mStateEnd, factor);
-                shouldProceed = true;
-
-                if (!isAnimatingState()) {
-                    onStateAnimationFinished(false);
-                }
-            }
-
-            if (shouldProceed) {
-                notifyStateUpdated();
-            }
-
-            return shouldProceed;
-        }
-    }
-
-
-    // -------------------
-    //  Listeners
-    // -------------------
-
-    /**
      * State changes listener
      */
     public interface OnStateChangeListener {
@@ -619,6 +558,11 @@ public class GestureController implements View.OnTouchListener {
 
         void onStateReset(State oldState, State newState);
     }
+
+
+    // -------------------
+    //  Listeners
+    // -------------------
 
     /**
      * Listener for different touch events
@@ -717,6 +661,55 @@ public class GestureController implements View.OnTouchListener {
         }
     }
 
+    /**
+     * Animation engine implementation to animate state changes
+     */
+    private class LocalAnimationEngine extends AnimationEngine {
+        public LocalAnimationEngine(@NonNull View view) {
+            super(view);
+        }
+
+        @Override
+        public boolean onStep() {
+            boolean shouldProceed = false;
+
+            if (isAnimatingFling()) {
+                int prevX = mFlingScroller.getCurrX(), prevY = mFlingScroller.getCurrY();
+
+                if (mFlingScroller.computeScrollOffset()) {
+                    int dX = mFlingScroller.getCurrX() - prevX;
+                    int dY = mFlingScroller.getCurrY() - prevY;
+
+                    if (!onFlingScroll(dX, dY)) {
+                        stopFlingAnimation();
+                    }
+
+                    shouldProceed = true;
+                }
+
+                if (!isAnimatingFling()) {
+                    onFlingAnimationFinished(false);
+                }
+            }
+
+            if (isAnimatingState()) {
+                mStateScroller.computeScroll();
+                float factor = mStateScroller.getCurr();
+                StateController.interpolate(mState, mStateStart, mStateEnd, factor);
+                shouldProceed = true;
+
+                if (!isAnimatingState()) {
+                    onStateAnimationFinished(false);
+                }
+            }
+
+            if (shouldProceed) {
+                notifyStateUpdated();
+            }
+
+            return shouldProceed;
+        }
+    }
 
     /**
      * All listeners in one class.
@@ -760,7 +753,7 @@ public class GestureController implements View.OnTouchListener {
 
         @Override
         public boolean onScroll(@NonNull MotionEvent e1, @NonNull MotionEvent e2,
-                float distanceX, float distanceY) {
+                                float distanceX, float distanceY) {
             return GestureController.this.onScroll(e1, e2, distanceX, distanceY);
         }
 
@@ -771,7 +764,7 @@ public class GestureController implements View.OnTouchListener {
 
         @Override
         public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2,
-                float velocityX, float velocityY) {
+                               float velocityX, float velocityY) {
             return GestureController.this.onFling(e1, e2, velocityX, velocityY);
         }
 

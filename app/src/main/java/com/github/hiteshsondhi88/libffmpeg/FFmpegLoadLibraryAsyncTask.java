@@ -30,7 +30,7 @@ class FFmpegLoadLibraryAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
             // make file executable
             if (isFileCopied) {
-                if(!ffmpegFile.canExecute()) {
+                if (!ffmpegFile.canExecute()) {
                     Log.d("FFmpeg is not executable, trying to make it executable ...");
                     if (ffmpegFile.setExecutable(true)) {
                         return true;

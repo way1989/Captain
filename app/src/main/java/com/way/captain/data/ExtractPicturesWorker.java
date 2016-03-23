@@ -18,7 +18,6 @@ import com.way.captain.utils.AppUtils;
 import java.io.FileOutputStream;
 
 /**
- *
  * @author way
  * @time 2016-02-01
  * @instuction

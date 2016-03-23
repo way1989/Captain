@@ -19,85 +19,8 @@ import android.view.View;
  */
 public class RotationGestureDetector {
 
-    /**
-     * The listener for receiving notifications when gestures occur. If you want to listen for all
-     * the different gestures then implement this interface. If you only want to listen for a
-     * subset it might be easier to extend {@link SimpleOnRotationGestureListener}.
-     * <p/>
-     * An application will receive events in the following order:
-     * <ul>
-     * <li>One {@link OnRotationGestureListener#onRotationBegin(RotationGestureDetector)}
-     * <li>Zero or more {@link OnRotationGestureListener#onRotate(RotationGestureDetector)}
-     * <li>One {@link OnRotationGestureListener#onRotationEnd(RotationGestureDetector)}
-     * </ul>
-     */
-    public interface OnRotationGestureListener {
-        /**
-         * Responds to rotation events for a gesture in progress. Reported by pointer motion.
-         *
-         * @param detector The detector reporting the event - use this to retrieve extended info
-         * about event state.
-         * @return Whether or not the detector should consider this event as handled. If an event
-         * was not handled, the detector will continue to accumulate movement until an event is
-         * handled. This can be useful if an application, for example, only wants to update
-         * rotation angle if the change is greater than 0.01.
-         */
-        boolean onRotate(RotationGestureDetector detector);
-
-        /**
-         * Responds to the beginning of a rotation gesture. Reported by new pointers going down.
-         *
-         * @param detector The detector reporting the event - use this to retrieve extended info
-         * about event state.
-         * @return Whether or not the detector should continue recognizing this gesture.
-         * For example, if a gesture is beginning with a focal point outside of a region where
-         * it makes sense, onRotationBegin() may return false to ignore the rest of the gesture.
-         */
-        boolean onRotationBegin(RotationGestureDetector detector);
-
-        /**
-         * Responds to the end of a rotation gesture. Reported by existing pointers going up.
-         * <p/>
-         * Once a rotation has ended, {@link RotationGestureDetector#getFocusX()} and
-         * {@link RotationGestureDetector#getFocusY()} will return focal point of the pointers
-         * remaining on the screen.
-         *
-         * @param detector The detector reporting the event - use this to retrieve extended info
-         * about event state.
-         */
-        void onRotationEnd(RotationGestureDetector detector);
-    }
-
-    /**
-     * A convenience class to extend when you only want to listen for a subset of rotation-related
-     * events. This implements all methods in {@link OnRotationGestureListener} but does nothing.
-     * {@link OnRotationGestureListener#onRotate(RotationGestureDetector)} returns {@code false}
-     * so that a subclass can retrieve the accumulated rotation factor in an overridden
-     * onRotationEnd. {@link OnRotationGestureListener#onRotationBegin(RotationGestureDetector)}
-     * returns {@code true}.
-     */
-    public static class SimpleOnRotationGestureListener implements OnRotationGestureListener {
-
-        @Override
-        public boolean onRotate(RotationGestureDetector detector) {
-            return false;
-        }
-
-        @Override
-        public boolean onRotationBegin(RotationGestureDetector detector) {
-            return true;
-        }
-
-        @Override
-        public void onRotationEnd(RotationGestureDetector detector) {
-            // Intentionally empty
-        }
-    }
-
     private static final float ROTATION_SLOP = 5f;
-
     private final OnRotationGestureListener mListener;
-
     private float mFocusX, mFocusY;
     private float mInitialAngle, mCurrAngle, mPrevAngle;
     private boolean mIsInProgress;
@@ -107,7 +30,7 @@ public class RotationGestureDetector {
      * Creates a RotationGestureDetector with the supplied listener.
      * You may only use this constructor from a {@link android.os.Looper Looper} thread.
      *
-     * @param context the application's context
+     * @param context  the application's context
      * @param listener the listener invoked for all the callbacks, this must not be null.
      * @throws NullPointerException if {@code listener} is null.
      */
@@ -242,6 +165,81 @@ public class RotationGestureDetector {
      */
     public float getRotationDelta() {
         return mCurrAngle - mPrevAngle;
+    }
+
+    /**
+     * The listener for receiving notifications when gestures occur. If you want to listen for all
+     * the different gestures then implement this interface. If you only want to listen for a
+     * subset it might be easier to extend {@link SimpleOnRotationGestureListener}.
+     * <p/>
+     * An application will receive events in the following order:
+     * <ul>
+     * <li>One {@link OnRotationGestureListener#onRotationBegin(RotationGestureDetector)}
+     * <li>Zero or more {@link OnRotationGestureListener#onRotate(RotationGestureDetector)}
+     * <li>One {@link OnRotationGestureListener#onRotationEnd(RotationGestureDetector)}
+     * </ul>
+     */
+    public interface OnRotationGestureListener {
+        /**
+         * Responds to rotation events for a gesture in progress. Reported by pointer motion.
+         *
+         * @param detector The detector reporting the event - use this to retrieve extended info
+         *                 about event state.
+         * @return Whether or not the detector should consider this event as handled. If an event
+         * was not handled, the detector will continue to accumulate movement until an event is
+         * handled. This can be useful if an application, for example, only wants to update
+         * rotation angle if the change is greater than 0.01.
+         */
+        boolean onRotate(RotationGestureDetector detector);
+
+        /**
+         * Responds to the beginning of a rotation gesture. Reported by new pointers going down.
+         *
+         * @param detector The detector reporting the event - use this to retrieve extended info
+         *                 about event state.
+         * @return Whether or not the detector should continue recognizing this gesture.
+         * For example, if a gesture is beginning with a focal point outside of a region where
+         * it makes sense, onRotationBegin() may return false to ignore the rest of the gesture.
+         */
+        boolean onRotationBegin(RotationGestureDetector detector);
+
+        /**
+         * Responds to the end of a rotation gesture. Reported by existing pointers going up.
+         * <p/>
+         * Once a rotation has ended, {@link RotationGestureDetector#getFocusX()} and
+         * {@link RotationGestureDetector#getFocusY()} will return focal point of the pointers
+         * remaining on the screen.
+         *
+         * @param detector The detector reporting the event - use this to retrieve extended info
+         *                 about event state.
+         */
+        void onRotationEnd(RotationGestureDetector detector);
+    }
+
+    /**
+     * A convenience class to extend when you only want to listen for a subset of rotation-related
+     * events. This implements all methods in {@link OnRotationGestureListener} but does nothing.
+     * {@link OnRotationGestureListener#onRotate(RotationGestureDetector)} returns {@code false}
+     * so that a subclass can retrieve the accumulated rotation factor in an overridden
+     * onRotationEnd. {@link OnRotationGestureListener#onRotationBegin(RotationGestureDetector)}
+     * returns {@code true}.
+     */
+    public static class SimpleOnRotationGestureListener implements OnRotationGestureListener {
+
+        @Override
+        public boolean onRotate(RotationGestureDetector detector) {
+            return false;
+        }
+
+        @Override
+        public boolean onRotationBegin(RotationGestureDetector detector) {
+            return true;
+        }
+
+        @Override
+        public void onRotationEnd(RotationGestureDetector detector) {
+            // Intentionally empty
+        }
     }
 
 }
