@@ -6,9 +6,6 @@ def buildTime() {
     return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
 }
 
-def filePrivateProperties = file("../local.properties")
-
-
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -22,13 +19,15 @@ android {
     }
     signingConfigs {
         release {
+            def filePrivateProperties = file("../private.properties")
             if (filePrivateProperties.exists()) {
                 Properties propsPrivate = new Properties()
                 propsPrivate.load(new FileInputStream(filePrivateProperties))
+
                 storeFile file(propsPrivate['key.store'])
                 keyAlias propsPrivate['key.alias']
                 storePassword propsPrivate['key.store.password']
-                keyPassword propsPrivate['kkey.alias.password']
+                keyPassword propsPrivate['key.alias.password']
             }
 
         }
@@ -96,7 +95,10 @@ dependencies {
         transitive = true
     }
     compile 'com.bugtags.library:bugtags-lib:latest.integration'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1' // or 1.4-beta1
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1' // or 1.4-beta1
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1' // or 1.4-beta1
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    // or 1.4-beta1
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    // or 1.4-beta1
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    // or 1.4-beta1
 }
