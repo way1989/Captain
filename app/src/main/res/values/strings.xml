@@ -102,4 +102,9 @@
     <string name="stop">Stop</string>
     <string name="video_length">Video length: %s</string>
     <string name="not_enough_storage">Not enough storage available</string>
+
+    <string name="video_stop_float">Float view</string>
+    <string name="video_stop_notification">Notification</string>
+    <string name="video_stop_method">Video stop method</string>
+    <string name="video_stop_method_summary">Select stop video method</string>
 </resources>

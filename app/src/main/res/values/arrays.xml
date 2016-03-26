@@ -23,5 +23,14 @@
         <item>50</item>
 
     </string-array>
-
+    <string-array name="video_stop_method_entries">
+        <item>@string/video_stop_float</item>
+        <item>@string/video_stop_notification</item>
+    </string-array>
+    <string-array name="video_stop_method_values" translatable="false">
+        <!-- Do not translate. -->
+        <item>0</item>
+        <!-- Do not translate. -->
+        <item>1</item>
+    </string-array>
 </resources>

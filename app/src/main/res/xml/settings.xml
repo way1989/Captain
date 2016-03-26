@@ -24,6 +24,13 @@
             android:key="key_video_size_percentage"
             android:summary="@string/video_size_percentage_summary"
             android:title="@string/video_size_percentage" />
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/video_stop_method_entries"
+            android:entryValues="@array/video_stop_method_values"
+            android:key="key_video_stop_method"
+            android:summary="@string/video_stop_method_summary"
+            android:title="@string/video_stop_method" />
         <SwitchPreference
             android:defaultValue="false"
             android:key="key_three_second_countdown"
