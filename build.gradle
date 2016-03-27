@@ -5,19 +5,25 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.android.tools.build:gradle:2.0.0-beta7'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
         //**重要**
-        classpath 'com.bugtags.library:bugtags-gradle:latest.integration'
+        //classpath 'com.bugtags.library:bugtags-gradle:latest.integration'
+
+        //添加fir插件依赖
+        //classpath 'im.fir:gradle-fir-publisher:1.0.2'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
-        mavenCentral()  //注：repository 2
+        //mavenCentral()  //注：repository 2
+        maven {
+            url "http://maven.bughd.com/public"
+        }
     }
 }
 
