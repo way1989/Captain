@@ -1,10 +1,7 @@
 package com.way.telecine;
 
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.SystemClock;
@@ -40,12 +37,6 @@ final class OverlayView extends FrameLayout {
     private static final int DURATION_ENTER_EXIT = 300;
     private final Listener listener;
     private final boolean showCountDown;
-    BroadcastReceiver stopReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            listener.onStop();
-        }
-    };
     private View mStartContainer;
     private View mCancelButton;
     private TextView mQualityTextView;
@@ -230,14 +221,12 @@ final class OverlayView extends FrameLayout {
         animate().alpha(1).setDuration(DURATION_ENTER_EXIT).setInterpolator(new DecelerateInterpolator());
         //setTranslationX(animationWidth);
         //animate().translationX(0).setDuration(DURATION_ENTER_EXIT).setInterpolator(new DecelerateInterpolator());
-        IntentFilter intentFilter = new IntentFilter(TelecineService.ACTION_STOP_SCREENRECORD);
-        getContext().registerReceiver(stopReceiver, intentFilter);
+
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        getContext().unregisterReceiver(stopReceiver);
     }
 
     void onCancelClicked() {

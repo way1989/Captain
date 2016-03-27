@@ -48,8 +48,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         }
         ListPreference sizeListPreference = (ListPreference) findPreference(VIDEO_SIZE_KEY);
         sizeListPreference.setSummary(sizeListPreference.getEntry());
-        ListPreference stopMethodListPreference = (ListPreference) findPreference(VIDEO_STOP_METHOD_KEY);
-        stopMethodListPreference.setSummary(stopMethodListPreference.getEntry());
         if (AppUtils.isMarshmallow()) {
             PreferenceCategory preferenceScreen = (PreferenceCategory) findPreference("key_advance_category");
             preferenceScreen.removePreference(findPreference(SHOW_TOUCHES_KEY));
@@ -78,7 +76,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case VIDEO_SIZE_KEY:
-            case VIDEO_STOP_METHOD_KEY:
                 ListPreference listPreference = (ListPreference) findPreference(key);
                 listPreference.setSummary(listPreference.getEntry());
                 break;

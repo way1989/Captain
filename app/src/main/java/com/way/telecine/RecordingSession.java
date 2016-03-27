@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.hardware.display.VirtualDisplay;
@@ -21,12 +22,14 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Surface;
 import android.view.WindowManager;
 
 import com.way.captain.R;
+import com.way.captain.fragment.SettingsFragment;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,7 +73,14 @@ final class RecordingSession {
     private VirtualDisplay display;
     private String outputFile;
     private boolean running;
+    BroadcastReceiver stopReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            stopRecording();
+        }
+    };
     private long recordingStartNanos;
+
 
     RecordingSession(Context context, Listener listener, int resultCode, Intent data, Boolean showCountDown,
                      Integer videoSizePercentage) {
@@ -201,6 +211,12 @@ final class RecordingSession {
 
     private void startRecording() {
         Log.d("way", "Starting screen recording...");
+        if (!PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(SettingsFragment.VIDEO_STOP_METHOD_KEY, true)) {
+            hideOverlay();
+            IntentFilter intentFilter = new IntentFilter(TelecineService.ACTION_STOP_SCREENRECORD);
+            context.registerReceiver(stopReceiver, intentFilter);
+        }
 
         if (!outputRoot.mkdirs()) {
             Log.e("way", "Unable to create output directory '" + outputRoot.getAbsolutePath() + "'.");
@@ -253,8 +269,12 @@ final class RecordingSession {
             throw new IllegalStateException("Not running.");
         }
         running = false;
-
-        hideOverlay();
+        if (!PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(SettingsFragment.VIDEO_STOP_METHOD_KEY, true)) {
+            context.unregisterReceiver(stopReceiver);
+        }else {
+            hideOverlay();
+        }
 
         // Stop the projection in order to flush everything to the recorder.
         projection.stop();

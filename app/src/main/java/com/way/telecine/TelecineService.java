@@ -50,30 +50,33 @@ public final class TelecineService extends Service {
                 if (!AppUtils.isMarshmallow())
                     Settings.System.putInt(contentResolver, SHOW_TOUCHES, 1);
             }
-            startTime = SystemClock.elapsedRealtime();
-            mBuilder = createNotificationBuilder();
-            mTimer = new Timer();
-            mTimer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    updateNotification(TelecineService.this);
-                }
-            }, 100, 1000);
-
-//            Context context = getApplicationContext();
-//            String title = context.getString(R.string.notification_recording_title);
-//            //String subtitle = context.getString(R.string.notification_recording_subtitle);
-//            Notification.Builder builder  = new Notification.Builder(context) //
-//                    .setContentTitle(title)/*.setContentText(subtitle)*/.setSmallIcon(R.drawable.ic_videocam_white_24dp)
-//                    .setColor(context.getResources().getColor(R.color.primary_normal)).setAutoCancel(true)
-//                    .setPriority(PRIORITY_MIN);
-//            Intent stopIntent = new Intent("com.way.stop");
-//            stopIntent.putExtra("id", NOTIFICATION_ID);
-//            builder.addAction(R.drawable.ic_clear_white_24dp,context.getResources()
-//                    .getString(R.string.share), PendingIntent.getBroadcast(context, 0, stopIntent, PendingIntent.FLAG_CANCEL_CURRENT));
-//            Notification notification  = builder.build();
-//            Log.d("way", "Moving service into the foreground with recording notification.");
-//            startForeground(NOTIFICATION_ID, notification);
+            if(!PreferenceManager.getDefaultSharedPreferences(TelecineService.this)
+                    .getBoolean(SettingsFragment.VIDEO_STOP_METHOD_KEY, true)) {
+                startTime = SystemClock.elapsedRealtime();
+                mBuilder = createNotificationBuilder();
+                mTimer = new Timer();
+                mTimer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        updateNotification(TelecineService.this);
+                    }
+                }, 100, 1000);
+            }else {
+            Context context = getApplicationContext();
+            String title = context.getString(R.string.notification_recording_title);
+            //String subtitle = context.getString(R.string.notification_recording_subtitle);
+            Notification.Builder builder  = new Notification.Builder(context) //
+                    .setContentTitle(title)/*.setContentText(subtitle)*/.setSmallIcon(R.drawable.ic_videocam_white_24dp)
+                    .setColor(context.getResources().getColor(R.color.primary_normal)).setAutoCancel(true)
+                    .setPriority(Notification.PRIORITY_MIN);
+            Intent stopIntent = new Intent("com.way.stop");
+            stopIntent.putExtra("id", NOTIFICATION_ID);
+            builder.addAction(R.drawable.ic_clear_white_24dp,context.getResources()
+                    .getString(R.string.share), PendingIntent.getBroadcast(context, 0, stopIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+            Notification notification  = builder.build();
+            Log.d("way", "Moving service into the foreground with recording notification.");
+            startForeground(NOTIFICATION_ID, notification);
+            }
         }
 
         @TargetApi(Build.VERSION_CODES.M)

@@ -92,5 +92,5 @@
     <string name="video_stop_float">浮动按钮</string>
     <string name="video_stop_notification">通知栏按钮</string>
     <string name="video_stop_method">停止视频方式</string>
-    <string name="video_stop_method_summary">选择停止视频的方式</string>
+    <string name="video_stop_method_summary">显示悬浮停止按钮</string>
 </resources>
