@@ -1,3 +1,3 @@
-# Captain
-Android Screenrecord and video to gif
+# Captain使用说明
+Captain是为Android平台设计的，集截屏、长截屏、录屏以及将录屏内容转换成GIF动态图等多功能于一体的，小巧强悍的实用型工具软件。
 
